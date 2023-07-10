@@ -2,7 +2,13 @@ const express = require('express');
 // const dotenv = require('dotenv').config();
 const { loginController } = require('./controllers/controller')
 const port = 3000;
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb+srv://derrick:derrick@cluster0.i0ajcgu.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.once('open', () => {
+  console.log('Connected to Database');
+});
+// 70.106.237.242/32
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
