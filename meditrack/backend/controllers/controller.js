@@ -6,33 +6,34 @@ const loginController = {
   // This should send the created user
   async createUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
-
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ error: 'Did not receive first name and/or last name'});
 
-      const userExists = await User.findOne({email})
-
-    if (userExists) {
-        res.status(400)
-        throw new Error('User already exists')
-    }
+      User.findOne({email: email })
+      .then((user)=>{
+          console.log("Result :", user);
+      })
+      .catch((err)=>{
+          console.log(err);
+      });
 
 
     const newUser = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password
+      firstName,
+      lastName,
+      email,
+      password,
     });
 
-    newUser.save((err, user) => {
-      if (err) {
+    newUser.save()
+      .then(() => {
+        res.status(200).json(newUser);
+      })
+      .catch((err) => {
         return res.status(400).json({error: 'failed to create new user   ' + err});
-      }
-      res.status(200).json(user);
-    });
+      });
   },
-
+};
   // Get a user from the database and send it in the response
   // Their first name will be in the request parameter 'name'
   // This should send the found user
@@ -63,6 +64,6 @@ const loginController = {
 //     if (data) return next();
 //     if (!data) return next(400);
 //   },
-};
+// };
 
 module.exports = { loginController };
