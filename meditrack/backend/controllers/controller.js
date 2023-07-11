@@ -9,13 +9,22 @@ const loginController = {
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ error: 'Did not receive first name and/or last name'});
 
-      User.findOne({email: email })
+      // const userExists = await User.findOne({ email })
+
+      
+
+      User.findOne({ email: email })
       .then((user)=>{
-          console.log("Result :", user);
+        if (user) {
+          res.status(400)
+          // throw new Error('User already exists')
+          return next('User already exists');
+        }
+          // console.log("Result :", user);
       })
-      .catch((err)=>{
-          console.log(err);
-      });
+      // .catch((err)=>{
+      //     console.log(err);
+      // });
 
 
     const newUser = new User({
@@ -33,18 +42,33 @@ const loginController = {
         return res.status(400).json({error: 'failed to create new user   ' + err});
       });
   },
-};
+
   // Get a user from the database and send it in the response
   // Their first name will be in the request parameter 'name'
   // This should send the found user
-//   getuser(req, res, next) {
-//     const { name } = req.params;
-//     user.findOne({ firstName: name }, (err, user) => {
-//       if  (err || !user)
-//         return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
-//       res.status(200).json(user);
-//     });
-//   },
+
+  async getUser(req, res, next) {
+    const { email } = req.params;
+    console.log(req.params)
+    User.findOne({ email: email })
+    .then((user) => {
+      if  (!user)
+        return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
+      console.log("Successfully logged in!")
+      res.send(user)
+    })
+    .catch((err) => {
+      return next(err)
+    })
+  //     (err, User) => {
+  //     console.log(User)
+  //     if  (err || !User)
+  //       return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
+  //     res.status(200).json(User);
+  //     console.log(User);
+  //     return next();
+  //   };
+  }
 
 //   // Get a user from the database and update the user
 //   // The user's first name will be in the request parameter 'name'
@@ -64,6 +88,6 @@ const loginController = {
 //     if (data) return next();
 //     if (!data) return next(400);
 //   },
-// };
+};
 
 module.exports = { loginController };
