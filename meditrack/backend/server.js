@@ -8,7 +8,7 @@ mongoose.connect('mongodb+srv://derrick:derrick@cluster0.i0ajcgu.mongodb.net/?re
 mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
-// 70.106.237.242/32
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));

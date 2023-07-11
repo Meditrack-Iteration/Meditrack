@@ -6,17 +6,16 @@ const loginController = {
   // This should send the created user
   async createUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
-    console.log(req.body)
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ error: 'Did not receive first name and/or last name'});
 
-      // User.findOne({email: {email} })
-      // .then((user)=>{
-      //     console.log("Result :", user);
-      // })
-      // .catch((err)=>{
-      //     console.log(err);
-      // });
+      User.findOne({email: email })
+      .then((user)=>{
+          console.log("Result :", user);
+      })
+      .catch((err)=>{
+          console.log(err);
+      });
 
 
     const newUser = new User({
