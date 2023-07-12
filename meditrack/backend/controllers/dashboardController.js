@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { Medication, Patient, User } = require('../models/models');
 
 // create post method to create a patient
