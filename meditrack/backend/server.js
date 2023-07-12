@@ -19,11 +19,9 @@ app.use(express.json());
 //     res.status(200).json({message: 'Here is your patient!'})
 // })
 
-
-//Routes for user
-
-app.post('/signup', loginController.createUser, (req, res) => {
-    res.status(200).json({message: 'User created!'})
+app.post('/api/signup', loginController.createUser, (req, res) => {
+  console.log('attempted to create user');
+    res.status(200).json(res.locals.newUser);
 })
 
 app.post('/login', loginController.getUser, (req, res) => {

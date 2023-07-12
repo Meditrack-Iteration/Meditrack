@@ -6,7 +6,9 @@ const loginController = {
   // Their information will be sent in the request body
   // This should send the created user
   async createUser(req, res, next) {
-    const { firstName, lastName, email, password, } = req.body;
+    const { firstName, lastName, email, password } = req.body;
+    console.log(req.body);
+    console.log('createUser fired');
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ error: 'Did not receive first name and/or last name'});
 
@@ -20,6 +22,23 @@ const loginController = {
           res.status(400)
           // throw new Error('User already exists')
           return next('User already exists');
+        } else {
+          const newUser = new User({
+            firstName,
+            lastName,
+            email,
+            password,
+          });
+      
+          newUser.save()
+            .then(() => {
+              res.locals.newUser = newUser;
+              next();
+              // res.status(200).json(newUser);
+            })
+            .catch((err) => {
+              return res.status(400).json({error: 'failed to create new user   ' + err});
+            });
         }
           // console.log("Result :", user);
       })
@@ -28,20 +47,7 @@ const loginController = {
       // });
 
 
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
-
-    newUser.save()
-      .then(() => {
-        res.status(200).json(newUser);
-      })
-      .catch((err) => {
-        return res.status(400).json({error: 'failed to create new user   ' + err});
-      });
+  
   },
 
   // Get a user from the database and send it in the response
