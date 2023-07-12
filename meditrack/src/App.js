@@ -8,6 +8,8 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import About from './components/About';
 import Diagnostic from './components/Diagnostic';
+import DoctorCalendar from './components/DoctorCalendar';
+import PatientCalendar from './components/PatientCalendar';
 
 /*
 ====================================
@@ -27,6 +29,8 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/dashboard/:username" element={<Dashboard />}></Route>
           <Route path="/about" element={<About />}></Route>
+          <Route path="/doccal" element={<DoctorCalendar />}></Route>
+          <Route path="/patientcal" element={<PatientCalendar />}></Route>
           <Route path="/dse" element={<Diagnostic />}></Route>
         </Routes>
       </header>

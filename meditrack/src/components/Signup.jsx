@@ -7,22 +7,21 @@ const Signup = props => {
     const [errorMessage, setErrorMessage] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleSignup = () => {
-        fetch('/signup', {
+        fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ firstName, lastName, username, email, password })
+            body: JSON.stringify({ firstName, lastName, email, password })
         }).then((data) => {
-            localStorage.setItem('username', username)
+            localStorage.setItem('email', email)
             console.log('hello');
-            navigate(`/dashboard/${username}`)
+            navigate(`/dashboard/${email}`)
         });
     };
     
@@ -51,13 +50,6 @@ const Signup = props => {
                 placeholder="Email"
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
-                >
-                </input>
-                <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e)=>setUsername(e.target.value)}
                 >
                 </input>
                 <input
