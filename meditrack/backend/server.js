@@ -1,6 +1,7 @@
 const express = require('express');
 // const dotenv = require('dotenv').config();
 const { loginController } = require('./controllers/controller')
+const { dashboardController } = require('./controllers/dashboardController')
 const port = 3000;
 const mongoose = require('mongoose');
 
@@ -14,8 +15,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.get('/api', loginController.getUser, (req, res) => {
-//     res.status(200).json({message: 'Connection made!'})
+// app.get('/dashboard/:email', loginController.getPatient, (req, res) => {
+//     res.status(200).json({message: 'Here is your patient!'})
 // })
 
 app.post('/api/signup', loginController.createUser, (req, res) => {
@@ -23,17 +24,31 @@ app.post('/api/signup', loginController.createUser, (req, res) => {
     res.status(200).json(res.locals.newUser);
 })
 
-app.post('/login/:email', loginController.getUser, (req, res) => {
+app.post('/login', loginController.getUser, (req, res) => {
   res.status(200).json({message: 'Logged In!'})
 })
 
-// app.put('/api',  (req, res) => {
-//     res.status(200).json({message: 'User updated!'})
-// })
+app.put('/dashboard/:email',  (req, res) => {
+    res.status(200).json({message: 'User updated!'})
+})
 
-// app.delete('/api', (req, res) => {
-//     res.status(200).json({message: 'User deleted!'})
-// })
+app.delete('/delete/:email', loginController.deleteUser, (req, res) => {
+    res.status(200).json({message: 'User deleted!'})
+})
+
+//Routes for patient
+
+app.post('/dashboard/patient', dashboardController.createPatient, (req, res) => {
+  res.status(200).json({message: 'Patient created!'})
+})
+
+app.get('/dashboard/:firstName', dashboardController.getPatient, (req, res) => {
+  res.status(200).json({message: 'Patient created!'})
+})
+
+app.delete('/dashboard/delete/:firstName', dashboardController.deletePatient, (req, res) => {
+  res.status(200).json({message: 'Patient deleted!'})
+})
 
 app.use((err, req, res, next) => {
   const defaultErr = {
