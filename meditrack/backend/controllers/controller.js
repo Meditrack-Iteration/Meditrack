@@ -21,6 +21,23 @@ const loginController = {
           res.status(400)
           // throw new Error('User already exists')
           return next('User already exists');
+        } else {
+          const newUser = new User({
+            firstName,
+            lastName,
+            email,
+            password,
+          });
+      
+          newUser.save()
+            .then(() => {
+              res.locals.newUser = newUser;
+              next();
+              // res.status(200).json(newUser);
+            })
+            .catch((err) => {
+              return res.status(400).json({error: 'failed to create new user   ' + err});
+            });
         }
           // console.log("Result :", user);
       })
@@ -29,20 +46,7 @@ const loginController = {
       // });
 
 
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
-
-    newUser.save()
-      .then(() => {
-        res.status(200).json(newUser);
-      })
-      .catch((err) => {
-        return res.status(400).json({error: 'failed to create new user   ' + err});
-      });
+  
   },
 
   // Get a user from the database and send it in the response

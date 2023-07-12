@@ -18,9 +18,9 @@ app.use(express.json());
 //     res.status(200).json({message: 'Connection made!'})
 // })
 
-app.post('/signup', loginController.createUser, (req, res) => {
+app.post('/api/signup', loginController.createUser, (req, res) => {
   console.log('attempted to create user');
-    res.status(200).json({message: 'User created!'})
+    res.status(200).json(res.locals.newUser);
 })
 
 app.post('/login/:email', loginController.getUser, (req, res) => {
