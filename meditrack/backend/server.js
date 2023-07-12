@@ -14,25 +14,25 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.get('/api', loginController.getUser, (req, res) => {
-//     res.status(200).json({message: 'Connection made!'})
+// app.get('/dashboard/:email', loginController.getPatient, (req, res) => {
+//     res.status(200).json({message: 'Here is your patient!'})
 // })
 
 app.post('/signup', loginController.createUser, (req, res) => {
     res.status(200).json({message: 'User created!'})
 })
 
-app.post('/login/:email', loginController.getUser, (req, res) => {
+app.post('/login', loginController.getUser, (req, res) => {
   res.status(200).json({message: 'Logged In!'})
 })
 
-// app.put('/api',  (req, res) => {
-//     res.status(200).json({message: 'User updated!'})
-// })
+app.put('/dashboard/:email',  (req, res) => {
+    res.status(200).json({message: 'User updated!'})
+})
 
-// app.delete('/api', (req, res) => {
-//     res.status(200).json({message: 'User deleted!'})
-// })
+app.delete('/delete/:email', loginController.deleteUser, (req, res) => {
+    res.status(200).json({message: 'User deleted!'})
+})
 
 app.use((err, req, res, next) => {
   const defaultErr = {

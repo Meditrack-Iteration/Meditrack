@@ -5,13 +5,13 @@ const loginController = {
   // Their information will be sent in the request body
   // This should send the created user
   async createUser(req, res, next) {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, } = req.body;
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ error: 'Did not receive first name and/or last name'});
 
       // const userExists = await User.findOne({ email })
 
-      
+
 
       User.findOne({ email: email })
       .then((user)=>{
@@ -48,9 +48,8 @@ const loginController = {
   // This should send the found user
 
   async getUser(req, res, next) {
-    const { email } = req.params;
-    console.log(req.params)
-    User.findOne({ email: email })
+    const { email, password } = req.body;
+    User.findOne({ email: email, password: password })
     .then((user) => {
       if  (!user)
         return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
@@ -68,7 +67,7 @@ const loginController = {
   //     console.log(User);
   //     return next();
   //   };
-  }
+  },
 
 //   // Get a user from the database and update the user
 //   // The user's first name will be in the request parameter 'name'
@@ -79,15 +78,16 @@ const loginController = {
 //     if (data === null) return next(400);
 //   },
 
-//   // Delete a user from the database
-//   // The user's first name will be sent in the request parameter 'name'
-//   // This should send a success status code
-//   async deleteuser(req, res, next) {
-//     const { name } = req.params;
-//     const data = await user.deleteOne({ firstName: name}); // returns {deletedCount: 1}
-//     if (data) return next();
-//     if (!data) return next(400);
-//   },
+  // Delete a user from the database
+  // The user's email name will be sent in the request parameter 'email'
+  // This should send a success status code
+  async deleteUser(req, res, next) {
+    const { email } = req.params;
+    const data = await User.deleteOne({ email: email}); // returns {deletedCount: 1}
+    console.log(data)
+    if (data.deletedCount === 0) return next(400);
+    if (data) return next();
+  },
 };
 
 module.exports = { loginController };
