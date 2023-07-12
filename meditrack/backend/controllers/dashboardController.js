@@ -16,8 +16,8 @@ const dashboardController = {
           weight,
         });
 
-        Patient.findOne({ email: email })
-        .then((Patient)=>{
+        Patient.findOne({ firstName: firstName })
+        .then((Patient) => {
           if (Patient) {
             res.status(400)
             // throw new Error('Patient already exists')
@@ -35,19 +35,27 @@ const dashboardController = {
           });
       },
 
-    // async getPatient(req, res, next) {
-    //     const { email } = req.params;
-    //     Patient.findOne({ email: email, password: password })
-    //     .then((Patient) => {
-    //       if  (!Patient)
-    //         return res.status(400).json({ error: 'Error in PatientModel.getPatient: Could not find Patient'});
-    //       console.log("Successfully logged in!")
-    //       res.send(Patient)
-    //     })
-    //     .catch((err) => {
-    //       return next(err)
-    //     })
-    // }
+    async getPatient(req, res, next) {
+        const { firstName } = req.params;
+        Patient.findOne({ firstName: firstName }) //include lastName her also?
+        .then((Patient) => {
+          if  (!Patient)
+            return res.status(400).json({ error: 'Error in PatientModel.getPatient: Could not find Patient'});
+          console.log("Couldn't find patient!")
+          res.send(Patient)
+        })
+        .catch((err) => {
+          return next(err)
+        })
+    },
+
+    async deletePatient(req, res, next) {
+      const { firstName } = req.params;
+      const data = await Patient.deleteOne({ firstName: firstName}); // returns {deletedCount: 1}
+      console.log(data)
+      if (data.deletedCount === 0) return next(400);
+      if (data) return next();
+    },
 };
 
 module.exports = { dashboardController }
