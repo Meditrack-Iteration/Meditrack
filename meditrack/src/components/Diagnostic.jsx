@@ -30,11 +30,21 @@ const Diagnostic = (symptoms) => {
   }
 
   return (
-    <div style={{marginTop: "20px"}}>
-      Diagnostic
-      <br />
-      <input style={{marginTop: "20px", marginRight: "10px" }}type="text" placeholder='symptoms'></input>
-      <button onClick={runPrompt}>Click Here to Run Prompt</button>
+    <div className="diagnostic-container" style={{marginTop: "20px"}}>
+      <h3 className="dse-title">Diagnostic Suggestion Engine</h3>
+      <p className="dse-para">To use the Diagnostic Suggestion Engine, please describe your symptoms below. The DSE will then determine 1-3 possible ailments that you may be suffering from, as well as 1-3 medications for you to consider taking in order to best address your concerns.</p>
+      <p className="dse-para">it's best to consult with a healthcare professional or registered dietitian who can provide personalized recommendations based on your individual needs and health status.</p>
+
+      <div className="form-container">
+        <form className="form-input" onSubmit={(e => {
+          e.preventDefault();
+          runPrompt();
+          })}>
+          <input type="text" placeholder='Symptoms'></input>
+          <input type="submit"></input>
+        </form>
+      </div>
+      {/* <button onClick={runPrompt}>Click Here to Run Prompt</button> */}
 
     </div>
   );

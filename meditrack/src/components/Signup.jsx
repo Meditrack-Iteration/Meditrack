@@ -26,8 +26,8 @@ const Signup = props => {
     };
     
     return(
-        <div className="signup-container">
-            <form onSubmit={(event) => {
+        <div className="form-container">
+            <form className="form-input" onSubmit={(event) => {
                 event.preventDefault();
                 handleSignup();
                 console.log('hello')}}>
