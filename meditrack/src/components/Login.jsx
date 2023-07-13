@@ -9,7 +9,7 @@ const Login = props => {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        fetch('/login', {
+        fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -23,8 +23,8 @@ const Login = props => {
     };
     
     return(
-        <div className="login-container">
-            <form onSubmit={(event) => {
+        <div className="form-container">
+            <form className="form-input" onSubmit={(event) => {
                 event.preventDefault();
                 handleLogin();
                 console.log('hello')}}>

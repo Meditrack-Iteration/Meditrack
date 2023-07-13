@@ -7,8 +7,8 @@ const Navbar = () => {
     <nav className="navbar">
         <Link className="site-title" to="/">Meditrack</Link>
         <ul>
-            <CustomLink to="/login">Login</CustomLink>
-            <CustomLink to="/signup">Signup</CustomLink>
+            {/* <CustomLink to="/login">Login</CustomLink>
+            <CustomLink to="/signup">Signup</CustomLink> */}
             <CustomLink to="/dashboard">Dashboard</CustomLink>
             <CustomLink to="/about">About</CustomLink>
             <CustomLink to="/dse">DSE</CustomLink>
