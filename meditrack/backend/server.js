@@ -1,7 +1,8 @@
 const express = require('express');
 // const dotenv = require('dotenv').config();
-const { loginController } = require('./controllers/controller')
-const { dashboardController } = require('./controllers/dashboardController')
+const { loginController } = require('./controllers/userController')
+const { dashboardController } = require('./controllers/patientController')
+const { medicationController } = require('./controllers/medicationController')
 const port = 3000;
 const mongoose = require('mongoose');
 
@@ -24,31 +25,45 @@ app.post('/api/signup', loginController.createUser, (req, res) => {
     res.status(200).json(res.locals.newUser);
 })
 
-app.post('/login', loginController.getUser, (req, res) => {
+app.post('/api/login', loginController.getUser, (req, res) => {
   res.status(200).json({message: 'Logged In!'})
 })
 
-app.put('/dashboard/:email',  (req, res) => {
+app.put('/api/dashboard/:email',  (req, res) => {
     res.status(200).json({message: 'User updated!'})
 })
 
-app.delete('/delete/:email', loginController.deleteUser, (req, res) => {
+app.delete('/api/delete/:email', loginController.deleteUser, (req, res) => {
     res.status(200).json({message: 'User deleted!'})
 })
 
 //Routes for patient
 
-app.post('/dashboard/patient', dashboardController.createPatient, (req, res) => {
+app.post('/api/dashboard/patient', dashboardController.createPatient, (req, res) => {
   res.status(200).json({message: 'Patient created!'})
 })
 
-app.get('/dashboard/:firstName', dashboardController.getPatient, (req, res) => {
+app.get('/api/dashboard/:firstName', dashboardController.getPatient, (req, res) => {
   res.status(200).json({message: 'Patient created!'})
 })
 
-app.delete('/dashboard/delete/:firstName', dashboardController.deletePatient, (req, res) => {
+app.delete('/api/dashboard/delete/:firstName', dashboardController.deletePatient, (req, res) => {
   res.status(200).json({message: 'Patient deleted!'})
 })
+
+//Routes for medication
+// app.post('/api/dashboard/medication', medicationController.createPatient, (req, res) => {
+//   res.status(200).json({message: 'Medication created!'})
+// })
+
+// app.get('/api/dashboard/:firstName', medicationController.getPatient, (req, res) => {
+//   res.status(200).json({message: 'Medication Retrieved!'})
+// })
+
+// app.delete('/api/dashboard/delete/:firstName', medicationController.deletePatient, (req, res) => {
+//   res.status(200).json({message: 'Medication deleted!'})
+// })
+
 
 app.use((err, req, res, next) => {
   const defaultErr = {
