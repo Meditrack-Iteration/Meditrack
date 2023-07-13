@@ -59,7 +59,7 @@ const loginController = {
     User.findOne({ email: email, password: password })
     .then((user) => {
       if  (!user)
-        return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
+        return next({ error: 'Error in userModel.getuser: Could not find user'});
       console.log("Successfully logged in!")
       res.locals.user = user;
       return next();
@@ -75,6 +75,19 @@ const loginController = {
   //     console.log(User);
   //     return next();
   //   };
+  },
+
+  async getPatients(req, res, next) {
+    const { email } = req.params;
+    User.findOne({ email: email })
+    .then((user) => {
+      if  (!user)
+        return next({ error: 'Error in userModel.getuser: Could not find user'});
+      console.log("Successfully logged in!")
+      res.locals.userPatients = user;
+      // console.log(res.locals.userPatients);
+      return next();
+    })
   },
 
 //   // Get a user from the database and update the user

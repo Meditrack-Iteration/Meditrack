@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 const Login = props => {
     
     const [errorMessage, setErrorMessage] = useState(false);
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
@@ -14,11 +14,11 @@ const Login = props => {
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ email, password })
         }).then((data) => {
-            localStorage.setItem('username', username)
+            localStorage.setItem('email', email)
             console.log('hello');
-            navigate(`/dashboard/${username}`)
+            navigate(`/dashboard/${email}`)
         });
     };
     
@@ -30,9 +30,9 @@ const Login = props => {
                 console.log('hello')}}>
                 <input
                 type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e)=>setUsername(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 >
                 </input>
                 <input

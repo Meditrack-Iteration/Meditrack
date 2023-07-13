@@ -16,9 +16,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.get('/dashboard/:email', loginController.getPatient, (req, res) => {
-//     res.status(200).json({message: 'Here is your patient!'})
-// })
+app.get('/api/dashboard/:email', loginController.getPatients, (req, res) => {
+    res.status(200).json(res.locals.userPatients);
+})
 
 app.post('/api/signup', loginController.createUser, (req, res) => {
   console.log('attempted to create user');
@@ -26,7 +26,7 @@ app.post('/api/signup', loginController.createUser, (req, res) => {
 })
 
 app.post('/api/login', loginController.getUser, (req, res) => {
-  res.status(200).json({message: 'Logged In!'})
+  res.status(200).json(res.locals.user);
 })
 
 app.put('/api/dashboard/:email',  (req, res) => {
