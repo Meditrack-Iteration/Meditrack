@@ -1,52 +1,71 @@
 import React, {useEffect, useState} from 'react';
 
 const Dashboard = props => {
-    const {username} = props;
     const [patientsArray, setPatientsArray] = useState([]);
-    const [update, setUpdate] = useState([]);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
+    const email = localStorage.getItem('email');
 
-    // useEffect( () => {
-    //     console.log("useEffect fetch")
-    //     const email = localStorage.getItem('email');
-    //     fetch(`/dashboard/${email}`)
-    //     .then(data => data.json()) 
-    //     .then(data => {
-    //         setPatientsArray(data.patients);
-    //     })
-    //     // .then(data => console.log("log" ,data))
-    //     .catch(() => console.log("got nothing"))
+    useEffect( () => {
+        // console.log("useEffect fetch")
+        const email = localStorage.getItem('email');
+        fetch(`/api/dashboard/${email}`)
+        .then((data) => data.json()) 
+        .then((data) => {
+            console.log(data);
+            setPatientsArray(data.patients);
+        })
+        .catch(() => console.log("got nothing"))
 
-    // }, [])
+    }, []);
     
     const handleAddPatient = () => {
-        const email = localStorage.getItem('email');
-        fetch(`/dashboard/${email}`)
-        .then((data => {
-            let tempArr = data.patientsArray;
-            tempArr.push({
+        
+            let update = [...patientsArray];
+            update.push({
                 firstName,
                 lastName,
                 age,
                 weight
             })
-            setUpdate(tempArr);
-        }))
-        fetch(`/dashboard/${email}/patient`, {
+
+            console.log('update is', update);
+        fetch(`/api/dashboard/patient`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({ email, update })
+        }).then((data => {
+            reloadPatients();
+        }))
+    }
+
+    const reloadPatients = () => {
+        const email = localStorage.getItem('email');
+        fetch(`/api/dashboard/${email}`)
+        .then((data) => data.json()) 
+        .then((data) => {
+            console.log(data);
+            setPatientsArray(data.patients);
         })
+        // .then(data => console.log("log" ,data))
+        .catch(() => console.log("got nothing"))
     }
 
     return (
         <div className = 'dashboard-container'>
-            <h2>Welcome {username}</h2>
+            <h2>Welcome {email}</h2>
+            <h3>Patients</h3>
+            <div>
+                {patientsArray.map((patient) => (
+                    <div>
+                        {patient.firstName}
+                    </div>
+                ))}
+            </div>
             <form className="form-input" onSubmit={(event) => {
                 event.preventDefault();
                 handleAddPatient();
