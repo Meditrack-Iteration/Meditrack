@@ -61,7 +61,8 @@ const loginController = {
       if  (!user)
         return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
       console.log("Successfully logged in!")
-      res.send(user)
+      res.locals.user = user;
+      return next();
     })
     .catch((err) => {
       return next(err)
@@ -79,12 +80,26 @@ const loginController = {
 //   // Get a user from the database and update the user
 //   // The user's first name will be in the request parameter 'name'
 //   // The user's new first name will be in the request body
-//   async updateuser(req, res, next) {
-//     const data = await  user.findOneAndUpdate({firstName: req.params.name}, {firstName: req.body.firstName});
+// const data = await  user.findOneAndUpdate({firstName: req.params.name}, {firstName: req.body.firstName});
 //     if (data !== null) return next();
 //     if (data === null) return next(400);
-//   },
 
+  // async updateUser(req, res, next) {
+    
+
+  // await User.updateOne(
+  //   {email: email},
+  //   { $push: { patients: { newPatient } } },
+  //   { new: true },
+  //   (err, updatedUser) => {
+  //     if (err) {
+  //       // handle error
+  //       console.log('an err occurred');
+  //     }
+  //     res.json(updatedUser.patients);
+  //   }
+  // );
+  // },
   // Delete a user from the database
   // The user's email name will be sent in the request parameter 'email'
   // This should send a success status code
