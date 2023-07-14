@@ -26,7 +26,7 @@ app.post('/api/signup', loginController.createUser, (req, res) => {
 })
 
 app.post('/api/login', loginController.getUser, (req, res) => {
-  res.status(200).json({message: 'Logged In!'})
+  res.status(200).json({message: 'Logged In!'})  //add password requirement
 })
 
 app.put('/api/dashboard/:email',  (req, res) => {
