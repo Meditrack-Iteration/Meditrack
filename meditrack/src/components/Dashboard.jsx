@@ -15,7 +15,6 @@ const Dashboard = props => {
         fetch(`/api/dashboard/${email}`)
         .then((data) => data.json()) 
         .then((data) => {
-            console.log(data);
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("got nothing"))
@@ -31,8 +30,6 @@ const Dashboard = props => {
                 age,
                 weight
             })
-
-            console.log('update is', update);
         fetch(`/api/dashboard/patient`, {
             method: 'POST',
             headers: {

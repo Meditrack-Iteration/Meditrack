@@ -19,10 +19,7 @@ const Navbar = () => {
     <nav className="navbar">
         <Link className="site-title" to="/">Meditrack</Link>
         <ul>
-            {/* <CustomLink to="/login">Login</CustomLink>
-            <CustomLink to="/signup">Signup</CustomLink> */}
             <CustomLink to="/dashboard/:email">Dashboard</CustomLink>
-            <CustomLink to="/about">About</CustomLink>
             <CustomLink to="/dse">DSE</CustomLink>
             <CustomLink to="/patientcal">Med Calendar</CustomLink>
             <CustomLink to="/doccal">Schedule an Appointment</CustomLink>

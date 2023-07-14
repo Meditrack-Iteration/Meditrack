@@ -62,7 +62,7 @@ const PatientCalendar = props => {
         localizer={localizer}
         events={allEvents}
         startAccessor="start"
-        endAccessor="start" // Set the endAccessor to the same value as startAccessor
+        endAccessor="start"
         style={{ height: 500, margin: "50px" }}
       />
     </div>

@@ -15,6 +15,7 @@ const PatientList = props => {
                 lastName={patient.lastName}
                 age={patient.age}
                 weight={patient.weight}
+                medications={patient.medications}
                />)
 
                
