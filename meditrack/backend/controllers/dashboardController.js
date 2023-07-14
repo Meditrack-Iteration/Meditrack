@@ -12,7 +12,7 @@ const dashboardController = {
         
            await User.findOneAndUpdate(
               {email: email },
-               {patients:  update },
+               {patients: update} ,
               { new: true })
             
             return next();

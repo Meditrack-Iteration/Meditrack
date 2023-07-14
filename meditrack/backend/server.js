@@ -1,7 +1,7 @@
 const express = require('express');
 // const dotenv = require('dotenv').config();
-const { loginController } = require('./controllers/userController')
-const { dashboardController } = require('./controllers/patientController')
+const { userController } = require('./controllers/userController')
+const { dashboardController } = require('./controllers/dashboardController')
 const { medicationController } = require('./controllers/medicationController')
 const port = 3000;
 const mongoose = require('mongoose');
@@ -16,24 +16,25 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/api/dashboard/:email', loginController.getPatients, (req, res) => {
-    res.status(200).json(res.locals.userPatients);
+app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
+    res.status(200).json(res.locals.user);
 })
 
-app.post('/api/signup', loginController.createUser, (req, res) => {
+app.post('/api/signup', userController.createUser, (req, res) => {
   console.log('attempted to create user');
     res.status(200).json(res.locals.newUser);
 })
 
-app.post('/api/login', loginController.getUser, (req, res) => {
+app.post('/api/login', userController.getUser, (req, res) => {
   res.status(200).json(res.locals.user);
 })
 
-app.put('/api/dashboard/:email',  (req, res) => {
+//update user
+app.put('/api/dashboard/:email', userController.updateUser, (req, res) => {
     res.status(200).json({message: 'User updated!'})
 })
 
-app.delete('/api/delete/:email', loginController.deleteUser, (req, res) => {
+app.delete('/api/delete/:email', userController.deleteUser, (req, res) => {
     res.status(200).json({message: 'User deleted!'})
 })
 

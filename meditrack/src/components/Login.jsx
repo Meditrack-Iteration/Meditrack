@@ -17,7 +17,6 @@ const Login = props => {
             body: JSON.stringify({ email, password })
         }).then((data) => {
             localStorage.setItem('email', email)
-            console.log('hello');
             navigate(`/dashboard/${email}`)
         });
     };
