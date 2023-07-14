@@ -10,9 +10,9 @@ const Home = () => {
         <div className="homepage-container">
             <h1>MediTrack</h1>
             <h3>Please <Link className="link" to="/login">login</Link> or <Link className="link" to="signup">signup</Link> to continue</h3>
-            <div className="home section__padding" id="volunteer">
+            <div className="home section__padding">
             <div className="home-image">
-            <img src={logo} alt="Social Determinents of Health" />
+            <img src={logo} alt="logo" />
             </div>
             <div className="home-content">
             <h1 className="gradient__text">Seamlessly Manage Your <br /> Medication Journey</h1>
