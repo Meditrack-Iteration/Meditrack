@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 
 const Navbar = () => {
     const [email, setEmail] = useState('');
@@ -9,20 +9,15 @@ const Navbar = () => {
 
     }, []);
 
-    // const navigate = useNavigate();
-
-    // const handleDashboardClick = () => {
-    //     navigate(`/dashboard/${email}`);
-    // }
-
   return (
     <nav className="navbar">
         <Link className="site-title" to="/">Meditrack</Link>
         <ul>
             <CustomLink to="/dashboard/:email">Dashboard</CustomLink>
-            <CustomLink to="/dse">DSE</CustomLink>
-            <CustomLink to="/patientcal">Med Calendar</CustomLink>
+            <CustomLink to="/schedule">Schedule Reminders</CustomLink>
+            <CustomLink to="/patientcal">Medication Calendar</CustomLink>
             <CustomLink to="/doccal">Schedule an Appointment</CustomLink>
+            <CustomLink to="/dse">Diagnostic Suggestion Engine</CustomLink>
         </ul>
     </nav>
   );

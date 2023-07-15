@@ -10,6 +10,7 @@ import About from './components/About';
 import Diagnostic from './components/Diagnostic';
 import DoctorCalendar from './components/DoctorCalendar';
 import PatientCalendar from './components/PatientCalendar';
+import ScheduleReminders from './components/ScheduleReminders';
 
 /*
 ====================================
@@ -32,6 +33,7 @@ function App() {
           <Route path="/doccal" element={<DoctorCalendar />}></Route>
           <Route path="/patientcal" element={<PatientCalendar />}></Route>
           <Route path="/dse" element={<Diagnostic />}></Route>
+          <Route path="/schedule" element={<ScheduleReminders/>}></Route>
         </Routes>
       </header>
     </div>

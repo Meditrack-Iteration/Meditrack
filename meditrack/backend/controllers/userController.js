@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const { Medication, Patient, User } = require('../models/models');
+const { Medication, Patient, User, Doctor } = require('../models/models');
 
 const userController = {
   // Create a new user in the Database
@@ -8,7 +8,7 @@ const userController = {
   async createUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
     console.log(req.body);
-    console.log('createUser fired');
+    // console.log('createUser fired');
     if (!firstName || !lastName || !email || !password)
       // return res.status(400).json({ error: 'Did not receive first name and/or last name'});
       return next({err : "Error ccreating a new user, missing first name, last name, email, or password"}) //JB
@@ -119,6 +119,33 @@ const userController = {
     if (data.deletedCount === 0) return next({err : "Error deleting user"});
     if (data) return next();
   },
+
+  async createDoctor(req, res, next) {
+    const { name, hoursAvailable } = req.body;
+    
+    const newDoctor = new Doctor({
+      name,
+      hoursAvailable,
+    });
+
+    newDoctor.save()
+            .then(() => {
+              res.locals.newDoctor = newDoctor;
+              next();
+            })
+            .catch((err) => {
+              return {err: `failed to create new Doctor`};
+            });
+  },
+
+  async getDoctors(req, res, next) {
+    console.log('fetched doctors');
+
+    await Doctor.find()
+    .then(data => res.locals.doctors = data);
+    next();
+  }
+
 };
 
 module.exports = { userController };
