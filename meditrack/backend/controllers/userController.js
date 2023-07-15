@@ -56,17 +56,20 @@ const userController = {
   // This should send the found user
 
   async getUser(req, res, next) {
+    console.log(req.body);
     const { email, password } = req.body;
+    if (!email || !password) return next({err: 'incorrect credentials'});
     User.findOne({ email: email, password: password })
     .then((user) => {
-      if  (!user)
-        return next({ err: 'Error in userModel.getuser: Could not find user'});
-      console.log("Successfully logged in!")
+      if (!user) return next({ err: 'Error in userModel.getuser: Could not find user'});
+      else {
+        console.log("Successfully logged in!")
       res.locals.user = user;
       return next();
+      }
     })
     .catch((err) => {
-      return next(err)
+      return next({err: 'err occurred while logging in'});
     })
   
   },

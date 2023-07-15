@@ -4,7 +4,7 @@ const Diagnostic = (symptoms) => {
   async function runPrompt() {
     const prompt = `I am not feeling very well. My symptoms are ${symptoms}. Can you provide 1-3 possible conditions as well as 1-3 medications for me to consider to address my concerns? Please provide specific medication names (i.e. Asprin, Aleve-D, Flonase, etc...)`;
 
-    const apiKey = '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';
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
     const requestOptions = {

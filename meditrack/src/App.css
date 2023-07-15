@@ -36,6 +36,7 @@
 
 .App {
   text-align: center;
+  height: 100%;
 }
 
 * {
@@ -64,6 +65,64 @@ body {
   /* color: var(--light-red-pink); */
   color: #AE2B7B;
 }
+
+.home {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-right: 2rem;
+}
+
+.home-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.home-content {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+
+  flex-direction: column;
+}
+
+.home-content h4 {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 30px;
+  color: #71E5FF;
+}
+
+.home-content h4:last-child {
+  color: #ff8A71;
+}
+
+.home-content h1 {
+  font-family: var(--font-family);
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 45px;
+  margin: 1rem 0;
+}
+
+.home-content p {
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+
+  margin-bottom: 2rem;
+}
+
 
 
 /*
@@ -112,6 +171,20 @@ body {
   /* background-color: var(--dark-red); */
   background-color: #0B73AB;
   color: var(--cream);
+}
+
+/*
+======================================================================================================================================================
+      Footer
+
+======================================================================================================================================================
+*/
+
+.footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
 }
 
 /*
@@ -173,7 +246,7 @@ body {
 }
 
 .form-input label {
-  margin-right: 10px;
+  /* margin-right: 1000px; */
 }
 
 /*
@@ -1830,6 +1903,10 @@ button.rbc-input::-moz-focus-inner {
   background-color: #e2e2e2;
 }
 
+.time-btn:focus {
+  background-color: rgba(var(--berry-red), .5);
+}
+
 .schedule-btn {
   background-color: #007bff;
   color: #fff;
@@ -1914,7 +1991,7 @@ button.rbc-input::-moz-focus-inner {
   background-color: #e6e6e6;
 }
 .react-calendar__month-view__weekdays {
-  color: var(--dark-red-pink);
+  color: rgb(var(--berry-red), .8);
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
@@ -2002,7 +2079,7 @@ button.rbc-input::-moz-focus-inner {
 }
 .react-calendar__tile--now {
   border-radius: 15px;
-  border: 2px solid var(--light-red-pink) !important;
+  border: 2px solid rgba(var(--berry-red), .5) !important;
   color: var(--light-red-pink);
 }
 .react-calendar__tile--now:enabled:hover,

@@ -16,9 +16,25 @@ const Login = props => {
             },
             body: JSON.stringify({ email, password })
         }).then((data) => {
-            localStorage.setItem('email', email)
-            navigate(`/dashboard/${email}`)
-        });
+            if (data.ok) return data.json()
+            else {
+                setErrorMessage(true)};
+                throw new Error ({err: 'login credntials are incorrect'});
+        }).then((data) => {
+            if (data.firstName){
+                console.log(data);
+                localStorage.setItem('email', email);
+                localStorage.setItem('firstName', data.firstName);
+                navigate(`/dashboard/${email}`);
+            }
+        }).catch((Error) => {
+            console.log(Error)
+        })
+        // .then((data) => {
+        //     if (data.ok) {
+
+        //     } else console.log('data not ok!')
+        // });
     };
     
     return(
@@ -43,6 +59,7 @@ const Login = props => {
                 </input><br></br>
                 <input type="submit"></input>
             </form>
+            {errorMessage && <p className="login-error">Email or password is incorrect!</p>}
         </div>
     );
 };

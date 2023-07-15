@@ -80,7 +80,7 @@ const handleSetPatient = (patient) => {
   };
 
   return (
-    <div>
+    <div className="reminder-container">
       <h1>Schedule Reminders</h1>
       <div className="form-container">
         <form className="form-input" onSubmit={handleEnrollPatient}>
@@ -134,7 +134,7 @@ const handleSetPatient = (patient) => {
           </label>
           <label>
             Phone Number:&nbsp;&nbsp;
-            <input type="text" value={frequency} onChange={(e) => setFrequency(e.target.value)} />
+            <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
           </label>
           <input type="submit" />
         </form>

@@ -8,8 +8,10 @@ const Patient = ({ firstName, lastName, age, weight, medications }) => {
   const [frequency, setFrequency] = useState('');
   const [directions, setDirections] = useState('');
   const [showMeds, setShowMeds] = useState(false);
+  const [medListKey, setMedListKey] = useState(0);
 
-  const handleShowMeds = () => {
+  const handleShowMeds = (e) => {
+    e.preventDefault();
     setShowMeds((prevShowMeds) => !prevShowMeds);
   };
 
@@ -56,6 +58,8 @@ const Patient = ({ firstName, lastName, age, weight, medications }) => {
       })
       .catch(() => console.log('got nothing'));
 
+    // setMedListKey((prevKey) => prevKey + 1);
+
     setName('');
     setDosage('');
     setFrequency('');
@@ -72,7 +76,7 @@ const Patient = ({ firstName, lastName, age, weight, medications }) => {
       <button className="show-meds" onClick={handleShowMeds}>
         {showMeds ? 'Hide Medications' : 'Show Medications'}
       </button>
-      {showMeds && <MedList medications={medications} />}
+      {showMeds && <MedList key={medListKey} medications={medications} firstName={firstName}/>}
       <br />
       <button className="add-med" onClick={handleAddClick}>
         Add Medication

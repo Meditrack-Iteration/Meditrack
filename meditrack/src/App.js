@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import React from 'react';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from "./components/Home";
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/dse" element={<Diagnostic />}></Route>
           <Route path="/schedule" element={<ScheduleReminders/>}></Route>
         </Routes>
+        <Footer />
       </header>
     </div>
   );

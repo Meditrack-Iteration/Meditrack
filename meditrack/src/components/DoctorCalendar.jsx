@@ -148,6 +148,7 @@ const DoctorCalendar = () => {
                       {timesAvailable.map((time, i) => (
                         <div key={`time-${i}`}>
                           <button
+                            style={{borderColor: "pink"}}
                             className="time-btn"
                             onClick={() => {
                               setDate((prev) => ({

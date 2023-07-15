@@ -8,6 +8,7 @@ const Dashboard = props => {
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
     const email = localStorage.getItem('email');
+    const name = localStorage.getItem('firstName');
 
     useEffect( () => {
         // console.log("useEffect fetch")
@@ -55,7 +56,7 @@ const Dashboard = props => {
 
     return (
         <div className = 'dashboard-container'>
-            <h2>Welcome {email}</h2>
+            <h2>Welcome, {name}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}
