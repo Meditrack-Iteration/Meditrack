@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import PatientList from './PatientList';
 
 const Dashboard = props => {
     const [patientsArray, setPatientsArray] = useState([]);
@@ -7,6 +8,7 @@ const Dashboard = props => {
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
     const email = localStorage.getItem('email');
+    const name = localStorage.getItem('firstName');
 
     useEffect( () => {
         // console.log("useEffect fetch")
@@ -14,7 +16,6 @@ const Dashboard = props => {
         fetch(`/api/dashboard/${email}`)
         .then((data) => data.json()) 
         .then((data) => {
-            console.log(data);
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("got nothing"))
@@ -30,8 +31,6 @@ const Dashboard = props => {
                 age,
                 weight
             })
-
-            console.log('update is', update);
         fetch(`/api/dashboard/patient`, {
             method: 'POST',
             headers: {
@@ -48,7 +47,7 @@ const Dashboard = props => {
         fetch(`/api/dashboard/${email}`)
         .then((data) => data.json()) 
         .then((data) => {
-            console.log(data);
+            // console.log(data);
             setPatientsArray(data.patients);
         })
         // .then(data => console.log("log" ,data))
@@ -57,19 +56,16 @@ const Dashboard = props => {
 
     return (
         <div className = 'dashboard-container'>
-            <h2>Welcome {email}</h2>
-            <h3>Patients</h3>
-            <div>
-                {patientsArray.map((patient) => (
-                    <div>
-                        {patient.firstName}
-                    </div>
-                ))}
+            <h2>Welcome, {name}!</h2>
+            <h3 className="patients-header">Patients</h3>
+            <div className="patients-container">
+            {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}
             </div>
-            <form className="form-input" onSubmit={(event) => {
+            <form className="form-input" id="add-patient-form" onSubmit={(event) => {
                 event.preventDefault();
                 handleAddPatient();
                 }}>
+                <span className="add-patient">Add Patient</span>
                 <input
                 type="text"
                 placeholder="First Name"

@@ -1,11 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import DatePicker from 'react-datepicker';
-// import "react-big-calendar/lib/css/react-big-calendar.css";
-// import "react-datepicker/dist/react-datepicker.css";
 
 const PatientCalendar = props => {
+
+
+  const events = [
+    
+  ];
+
+
+  const [newEvent, setNewEvent] = useState({ title: "", start: null });
+  const [allEvents, setAllEvents] = useState(events);
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [patientsArray, setPatientsArray] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState([]);
+
+  useEffect( () => {
+    const email = localStorage.getItem('email');
+    fetch(`/api/dashboard/${email}`)
+    .then((data) => data.json()) 
+    .then((data) => {
+        setPatientsArray(data.patients);
+        const events = data.patients.reduce((acc, patient) => {
+          return acc.concat(
+            patient.medicationLog.map((log) => ({
+              title: log.medication,
+              start: new Date(log.date),
+              patientFirstName: patient.firstName,
+            }))
+          );
+        }, []);
+  
+        setAllEvents(events);
+    })
+    .catch(() => console.log("got nothing"))
+
+}, []);
+
   const locales = {
     "en-US": require("date-fns/locale/en-US")
   };
@@ -18,55 +51,123 @@ const PatientCalendar = props => {
     locales
   });
 
-  const events = [
-    {
-      title: "Flonase",
-      allDay: false,
-      start: new Date(2023, 6, 8, 9, 30),
-    }
-  ];
+
+  const handlePatientSelection = (patient) => {
+    setSelectedPatient(patient);
+    const filteredEvents = allEvents.filter((event) => event.patientFirstName === patient.firstName);
+    setSelectedEvents(filteredEvents);
+  };
+  
 
   function handleAddEvent() {
+    if (!newEvent.title || !newEvent.start) {
+      return;
+    }
+  
+    const eventPayload = {
+      medication: newEvent.title,
+      date: newEvent.start,
+    };
+  
+    // Update allEvents
     setAllEvents([...allEvents, newEvent]);
-  }
+  
+    // Update selectedEvents
+    setSelectedEvents([...selectedEvents, {
+      title: newEvent.title,
+      start: newEvent.start,
+      patientFirstName: selectedPatient.firstName,
+    }]);
+  
+    const email = localStorage.getItem('email');
+  
+    let update = [];
+    fetch(`/api/dashboard/${email}`)
+      .then((data) => data.json())
+      .then((data) => {
+        update = [...data.patients];
+        for (let i = 0; i < update.length; i++) {
+          if (update[i].firstName === selectedPatient.firstName) {
+            update[i].medicationLog.push(eventPayload);
+          }
+        }
+        console.log('update', update);
+        fetch('/api/dashboard/patient', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, update })
+        })
+          .then(response => response.json())
+          .then(data => {
+            setNewEvent({ title: '', start: null });
+          })
+          .catch(error => {
+            console.error("Could not process POST request");
+          });
+      });
+  };
+  
 
-  const [newEvent, setNewEvent] = useState({ title: "", start: null });
-  const [allEvents, setAllEvents] = useState(events);
-
+  
+    
   return (
-    <div>
+    <div className="med-calendar-container">
       <h1>Medicine Dosage Log</h1>
-      <h2>Add New Event</h2>
+  
       <div>
-        <input
-          type="text"
-          placeholder='Add Title'
-          style={{ width: "20%", marginRight: "10px" }}
-          value={newEvent.title}
-          onChange={(e) => { setNewEvent({ ...newEvent, title: e.target.value }) }}
-        />
-        <div style={{ position: 'relative', zIndex: 9999 }}>
-
-        <DatePicker
-          placeholderText='Date and Time'
-          showTimeSelect
-          dateFormat="Pp"
-          style={{ marginRight: "10px", marginBottom: "10px"}}
-          selected={newEvent.start}
-          onChange={(start) => setNewEvent({ ...newEvent, start })}
-        />
-        </div>
-        <button style={{ marginTop: "10px" }} onClick={handleAddEvent}>Add Event</button>
+        <h2 className="select-patient-header">Select Patient</h2>
+        <select className="select-patient"
+          value={selectedPatient?.firstName || ''}
+          onChange={(e) => handlePatientSelection(patientsArray.find(p => p.firstName === e.target.value))}
+        >
+          <option value="">Select Patient</option>
+          {patientsArray.map((patient) => (
+            <option key={patient.firstName} value={patient.firstName}>{patient.firstName}</option>
+          ))}
+        </select>
       </div>
+  
+      {selectedPatient && selectedPatient.medications && (
+        <>
+          <h2 className="log-meds">Log Medication</h2>
+          <div>
+            <select className="select-medication"
+              value={newEvent.title}
+              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+            >
+              <option value="">Select Medication</option>
+              {selectedPatient.medications.map((medication) => (
+                <option key={medication.name} value={medication.name}>{medication.name}</option>
+              ))}
+            </select>
+            <div className="date-picker" style={{ position: 'relative', zIndex: 9999 }}>
+              <DatePicker
+                placeholderText='Date and Time'
+                showTimeSelect
+                dateFormat="Pp"
+                style={{ marginRight: "10px", marginBottom: "10px" }}
+                selected={newEvent.start}
+                onChange={(start) => setNewEvent({ ...newEvent, start })}
+              />
+            </div>
+            <button className="med-cal-btn" style={{ marginTop: "10px" }} onClick={handleAddEvent}>Add Event</button>
+          </div>
+        </>
+      )}
+  
       <Calendar
         localizer={localizer}
-        events={allEvents}
+        events={selectedEvents}
         startAccessor="start"
-        endAccessor="start" // Set the endAccessor to the same value as startAccessor
+        endAccessor="start"
         style={{ height: 500, margin: "50px" }}
       />
     </div>
   );
+  
+  
 };
 
 export default PatientCalendar;

@@ -1,16 +1,17 @@
 /* eslint-disable no-unused-vars */
-const { Medication, Patient, User } = require('../models/models');
+const { Medication, Patient, User, Doctor } = require('../models/models');
 
-const loginController = {
+const userController = {
   // Create a new user in the Database
   // Their information will be sent in the request body
   // This should send the created user
   async createUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
     console.log(req.body);
-    console.log('createUser fired');
+    // console.log('createUser fired');
     if (!firstName || !lastName || !email || !password)
-      return res.status(400).json({ error: 'Did not receive first name and/or last name'});
+      // return res.status(400).json({ error: 'Did not receive first name and/or last name'});
+      return next({err : "Error ccreating a new user, missing first name, last name, email, or password"}) //JB
 
       // const userExists = await User.findOne({ email })
 
@@ -19,9 +20,9 @@ const loginController = {
       User.findOne({ email: email })
       .then((user)=>{
         if (user) {
-          res.status(400)
+          // res.status(400)
           // throw new Error('User already exists')
-          return next('User already exists');
+          return next({err: 'User already exists'});
         } else {
           const newUser = new User({
             firstName,
@@ -37,7 +38,7 @@ const loginController = {
               // res.status(200).json(newUser);
             })
             .catch((err) => {
-              return res.status(400).json({error: 'failed to create new user   ' + err});
+              return {err: `failed to create new user, ${err}`};
             });
         }
           // console.log("Result :", user);
@@ -55,26 +56,22 @@ const loginController = {
   // This should send the found user
 
   async getUser(req, res, next) {
+    console.log(req.body);
     const { email, password } = req.body;
+    if (!email || !password) return next({err: 'incorrect credentials'});
     User.findOne({ email: email, password: password })
     .then((user) => {
-      if  (!user)
-        return next({ error: 'Error in userModel.getuser: Could not find user'});
-      console.log("Successfully logged in!")
+      if (!user) return next({ err: 'Error in userModel.getuser: Could not find user'});
+      else {
+        console.log("Successfully logged in!")
       res.locals.user = user;
       return next();
+      }
     })
     .catch((err) => {
-      return next(err)
+      return next({err: 'err occurred while logging in'});
     })
-  //     (err, User) => {
-  //     console.log(User)
-  //     if  (err || !User)
-  //       return res.status(400).json({ error: 'Error in userModel.getuser: Could not find user'});
-  //     res.status(200).json(User);
-  //     console.log(User);
-  //     return next();
-  //   };
+  
   },
 
   async getPatients(req, res, next) {
@@ -82,47 +79,76 @@ const loginController = {
     User.findOne({ email: email })
     .then((user) => {
       if  (!user)
-        return next({ error: 'Error in userModel.getuser: Could not find user'});
-      console.log("Successfully logged in!")
-      res.locals.userPatients = user;
+        return next({ err: 'Error in userModel.getuser: Could not find user'});
+      console.log("Get patients fired!")
+      res.locals.user = user;
       // console.log(res.locals.userPatients);
       return next();
     })
   },
 
-//   // Get a user from the database and update the user
-//   // The user's first name will be in the request parameter 'name'
-//   // The user's new first name will be in the request body
-// const data = await  user.findOneAndUpdate({firstName: req.params.name}, {firstName: req.body.firstName});
-//     if (data !== null) return next();
-//     if (data === null) return next(400);
+  //update user
 
-  // async updateUser(req, res, next) {
-    
+  async updateUser(req, res, next) {
+    console.log(req.body);
+    const { firstName, lastName, email, password } = req.body;
+    console.log('entered update user')  
+   
+    const update = {
+      firstName,
+      lastName,
+      email,
+      password
+    }
 
-  // await User.updateOne(
-  //   {email: email},
-  //   { $push: { patients: { newPatient } } },
-  //   { new: true },
-  //   (err, updatedUser) => {
-  //     if (err) {
-  //       // handle error
-  //       console.log('an err occurred');
-  //     }
-  //     res.json(updatedUser.patients);
-  //   }
-  // );
-  // },
-  // Delete a user from the database
-  // The user's email name will be sent in the request parameter 'email'
-  // This should send a success status code
+    try{
+      await User.findOneAndUpdate(
+          {email: email },
+           update,
+          { new: true })
+        return next();
+    }
+    catch(err){
+      return next({err : `Error creating a new patient, ${err}`});
+    }
+       
+      
+  },
+
   async deleteUser(req, res, next) {
     const { email } = req.params;
     const data = await User.deleteOne({ email: email}); // returns {deletedCount: 1}
     console.log(data)
-    if (data.deletedCount === 0) return next(400);
+    if (data.deletedCount === 0) return next({err : "Error deleting user"});
     if (data) return next();
   },
+
+  async createDoctor(req, res, next) {
+    const { name, hoursAvailable } = req.body;
+    
+    const newDoctor = new Doctor({
+      name,
+      hoursAvailable,
+    });
+
+    newDoctor.save()
+            .then(() => {
+              res.locals.newDoctor = newDoctor;
+              next();
+            })
+            .catch((err) => {
+              return {err: `failed to create new Doctor`};
+            });
+  },
+
+  async getDoctors(req, res, next) {
+    console.log('fetched doctors');
+
+    await Doctor.find()
+    .then(data => res.locals.doctors = data);
+    next();
+  }
+
 };
 
-module.exports = { loginController };
+module.exports = { userController };
