@@ -96,7 +96,7 @@ const PatientCalendar = props => {
     // setPatientsArray(...update);
     
     // Initialize temp variable to send to backend to update the User's document
-    let update = [];
+    let update = [...patientsArray];
     fetch(`/api/dashboard/${email}`)
       .then((data) => data.json())
       .then((data) => {

@@ -9,7 +9,7 @@ const Diagnostic = (symptoms) => {
   async function runPrompt() {
     const prompt = `I am not feeling very well. My symptoms are ${symptoms}. Can you provide 1-3 possible conditions as well as 1-3 medications for me to consider to address my concerns? Please provide specific medication names (i.e. Asprin, Aleve-D, Flonase, etc...)`;
 
-    const apiKey = 'YOUR KEY HERE' // For security reasons, OpenAI deactivates your api key if it detects it on Github, so we've removed ours since it will decativate before you read this
+    const apiKey = 'YOUR_API_KEY_HERE' // For security reasons, OpenAI deactivates your api key if it detects it on Github, so we've removed ours since it will decativate before you read this
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
     // Refer to OpenAI's docs regarding what temperature does. The higher the number, the whackier it gets.
