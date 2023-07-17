@@ -91,19 +91,23 @@ const PatientCalendar = props => {
     }]);
   
     const email = localStorage.getItem('email');
-  
-    // Initialize temp variable to send to backend to update the User's document
-    let update = [...patientsArray];
-
-    // Find the patient matching the selectedPatient state variable and push the eventPayload to the patient's medicationLog array
-    for (let i = 0; i < update.length; i++) {
-      if (update[i].firstName === selectedPatient.firstName) {
-        update[i].medicationLog.push(eventPayload);
-      }
-    }
-
+    
     // Update the patientsArray state variable
-    setPatientsArray(...update);
+    // setPatientsArray(...update);
+    
+    // Initialize temp variable to send to backend to update the User's document
+    let update = [];
+    fetch(`/api/dashboard/${email}`)
+      .then((data) => data.json())
+      .then((data) => {
+        update = [...data.patients];
+        for (let i = 0; i < update.length; i++) {
+          if (update[i].firstName === selectedPatient.firstName) {
+            update[i].medicationLog.push(eventPayload);
+          }
+        }
+      });
+        console.log('update', update);
 
     // Send the update to the backend
     fetch('/api/dashboard/patient', {
