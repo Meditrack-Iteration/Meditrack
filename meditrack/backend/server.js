@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 // const dotenv = require('dotenv').config();
 const { userController } = require('./controllers/userController')
 const { dashboardController } = require('./controllers/dashboardController')
@@ -15,6 +17,9 @@ mongoose.connection.once('open', () => {
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ credentials: true, origin: true }));
+app.use(express.json());
+app.use(cookieParser());
 app.use(express.json());
 
 app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
