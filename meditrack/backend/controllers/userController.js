@@ -6,10 +6,10 @@ const userController = {
   // Their information will be sent in the request body
   // This should send the created user
   async createUser(req, res, next) {
-    const { firstName, lastName, email, password } = req.body;
+    const { _id, firstName, lastName, email, password } = req.body;
     console.log(req.body);
     // console.log('createUser fired');
-    if (!firstName || !lastName || !email || !password)
+    if (!_id || !firstName || !lastName || !email || !password)
       // return res.status(400).json({ error: 'Did not receive first name and/or last name'});
       return next({err : "Error ccreating a new user, missing first name, last name, email, or password"}) //JB
 
@@ -17,7 +17,7 @@ const userController = {
 
 
 
-      User.findOne({ email: email })
+      User.findOne({ _id: _id })
       .then((user)=>{
         if (user) {
           // res.status(400)
@@ -25,6 +25,7 @@ const userController = {
           return next({err: 'User already exists'});
         } else {
           const newUser = new User({
+            _id,
             firstName,
             lastName,
             email,
