@@ -13,18 +13,19 @@ const Signup = props => {
     const navigate = useNavigate();
 
     const handleSignup = () => { 
-        const _id = new mongoose.Types.ObjectId()
         fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ _id, firstName, lastName, email, password })
+            body: JSON.stringify({ firstName, lastName, email, password })
         }).then((data) => {
-            localStorage.setItem('email', email);
-            localStorage.setItem('firstName', firstName);
+            let result = JSON.stringify(data)
+            console.log(result);
+            localStorage.setItem('_id', result._id);
+            // localStorage.setItem('firstName', firstName);
             console.log('hello');
-            navigate(`/dashboard/${email}`);
+            navigate(`/dashboard/${data._id}`);
         });
     };
     
