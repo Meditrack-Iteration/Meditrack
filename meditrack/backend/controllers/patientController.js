@@ -3,7 +3,7 @@ const { Medication, Patient, User } = require('../models/models');
 
 // create post method to create a patient
 // create put method to update  a patient in a user
-const dashboardController = {
+const patientController = {
 
     async createPatient(req, res, next) {
         console.log(req.body);
@@ -23,6 +23,36 @@ const dashboardController = {
            
           
       },
+
+      async addPatient(req, res, next){
+
+        // const id = req.cookies._id;
+
+        //deconstruct body
+        const {firstName, lastName, age, weight} = req.body;//remove _id once sessions are set up
+        
+        console.log("Attemping to add a patient")
+        console.log(req.cookies)
+        //alter user.patientArray to
+        try{
+          const _id = req.cookies._id;
+          console.log("ID : ", _id)
+          const user = await User.findOneAndUpdate(
+          {'_id' : _id },
+          {$push : {patients: {"firstName":firstName, "lastName":lastName, "age":age, "weight":weight}}}
+          )
+          console.log(user);
+          // await user.patients.push({
+          //   firstName,
+          //   lastName,
+          //   weight,
+          //   age
+          // })
+          next();
+        }catch(err){
+            return next({'error':'error'})
+        }
+      }
 
     // async getPatient(req, res, next) {
     //     const { firstName } = req.params;
@@ -48,4 +78,4 @@ const dashboardController = {
     // },
 };
 
-module.exports = { dashboardController }
+module.exports = { patientController }

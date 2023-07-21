@@ -3,19 +3,33 @@ const express = require('express');
 const { userController } = require('./controllers/userController')
 const { dashboardController } = require('./controllers/dashboardController')
 const { medicationController } = require('./controllers/medicationController')
+const { patientController } = require('./controllers/patientController')
+var cookieParser = require('cookie-parser')
 const port = 3000;
 const mongoose = require('mongoose');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
 
-mongoose.connect('mongodb+srv://seandromine:z0JRqCLk6zWekT9n@medicluster.94paoel.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+//Sean's database, leave for now. John still has access
+// mongoose.connect('mongodb+srv://seandromine:z0JRqCLk6zWekT9n@medicluster.94paoel.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connection.once('open', () => {
+//   console.log('Connected to Database');
+// });
+mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
 
+// mongodb+srv://johnnyb7184:<password>@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
+
+app.get('/', (req,res)=>{
+  console.log(req.cookies)
+  res.status(200).end();
+})
 
 app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
@@ -60,6 +74,13 @@ app.get('/api/doctor', userController.getDoctors, (req, res) => {
 app.post('/api/doctor', userController.createDoctor, (req, res) => {
   res.status(200).json({message: 'Doctor created!'});
 });
+
+//John's new routes
+app.post('/api/addPatient', patientController.addPatient, (req, res) => {
+  res.status(200).json({message: 'Successful Add!'});
+});
+
+
 
 // function sendTextMessage() {
 //   client.message.create({
