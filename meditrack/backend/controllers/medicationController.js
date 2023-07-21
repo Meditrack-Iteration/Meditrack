@@ -31,7 +31,13 @@ const medicationController = {
                 });
             }
         })
-    }
+    },
+    async addMedication(req, res, next){
+        //request body should contain
+
+    } 
+
+
 };
 
 module.exports = { medicationController }
