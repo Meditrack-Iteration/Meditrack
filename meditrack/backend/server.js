@@ -21,7 +21,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
+app.get('/api/dashboard', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
 
@@ -30,7 +30,7 @@ app.post('/api/signup', userController.createUser, cookieController.setCookie,  
     res.status(200).json(res.locals.newUser);
 })
 
-app.post('/api/login', userController.getUser, (req, res) => {
+app.post('/api/login', userController.getUser, cookieController.setCookie, (req, res) => {
   res.status(200).json(res.locals.user);
 })
 

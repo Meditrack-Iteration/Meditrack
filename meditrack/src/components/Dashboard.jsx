@@ -7,7 +7,6 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
-    const _id = localStorage.getItem('_id');
 
     useEffect( () => {
         // console.log("useEffect fetch")

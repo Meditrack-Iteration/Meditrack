@@ -31,7 +31,7 @@ const userController = {
       newUser.save()
         // User.create(newUser)
         .then((data) => {
-            res.locals.newUser = data;
+            res.locals.user = data;
             console.log("this is our new", data);
             next();
               // res.status(200).json(newUser);
