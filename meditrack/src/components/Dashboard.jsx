@@ -34,7 +34,7 @@ const Dashboard = props => {
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ _id, update })
+            body: JSON.stringify({  update })
         }).then((data => {
             reloadPatients();
         }))
@@ -54,7 +54,7 @@ const Dashboard = props => {
 
     return (
         <div className = 'dashboard-container'>
-            <h2>Welcome, {name}!</h2>
+            <h2>Welcome, {"name"}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}
