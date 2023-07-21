@@ -50,15 +50,13 @@ const patientSchema = new Schema({
 const Patient = mongoose.model('patient', patientSchema)
 
 const userSchema = new Schema({
-    // array of patients
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    // age: {type: Number, required: true},
-    // weight: {type: Number, required: true},
-    email: {type: String, required: true},
-    password: {type: String, required: true},
-    patients: {type: [patientSchema], required: false}
-})
+    _id: { type: Schema.Types.ObjectId, auto: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    patients: [{ type: Schema.Types.ObjectId, ref: 'patient' }]
+});
 
 const User = mongoose.model('user', userSchema)
 

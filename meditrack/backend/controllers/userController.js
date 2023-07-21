@@ -25,11 +25,13 @@ const userController = {
           return next({err: 'User already exists'});
         } else {
           const newUser = new User({
-            firstName,
-            lastName,
-            email,
-            password,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
           });
+
+          console.log(newUser);
       
           newUser.save()
             .then(() => {
