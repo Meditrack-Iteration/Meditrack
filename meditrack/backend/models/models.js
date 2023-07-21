@@ -53,7 +53,7 @@ const userSchema = new Schema({
     _id: { type: Schema.Types.ObjectId, auto: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     patients: [{ type: Schema.Types.ObjectId, ref: 'patient' }]
 });

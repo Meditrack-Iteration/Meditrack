@@ -20,12 +20,14 @@ const Signup = props => {
             },
             body: JSON.stringify({ firstName, lastName, email, password })
         }).then((data) => {
-            let result = JSON.stringify(data)
-            console.log(result);
-            localStorage.setItem('_id', result._id);
+           return data.json()
+        })
+        .then((data) =>{
+            console.log(data);
+            // localStorage.setItem('_id', data._id);
             // localStorage.setItem('firstName', firstName);
             console.log('hello');
-            navigate(`/dashboard/${data._id}`);
+            navigate(`/dashboard`);
         });
     };
     

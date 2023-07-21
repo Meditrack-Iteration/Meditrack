@@ -7,9 +7,10 @@ const { dashboardController } = require('./controllers/dashboardController')
 const { medicationController } = require('./controllers/medicationController')
 const port = 3000;
 const mongoose = require('mongoose');
+const { cookieController } = require('./controllers/cookieController');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
 
-mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true });
 mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
@@ -24,8 +25,8 @@ app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
 
-app.post('/api/signup', userController.createUser, (req, res) => {
-  console.log('attempted to create user', res.locals.newUser);
+app.post('/api/signup', userController.createUser, cookieController.setCookie,  (req, res) => {
+  console.log('new user created and saved', res.locals.newUser);
     res.status(200).json(res.locals.newUser);
 })
 
