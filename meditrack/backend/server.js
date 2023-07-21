@@ -5,30 +5,28 @@ const cookieParser = require('cookie-parser');
 const { userController } = require('./controllers/userController')
 const { dashboardController } = require('./controllers/dashboardController')
 const { medicationController } = require('./controllers/medicationController')
-const { patientController } = require('./controllers/patientController')
-var cookieParser = require('cookie-parser')
 const port = 3000;
 const mongoose = require('mongoose');
 const { cookieController } = require('./controllers/cookieController');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
 
-mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true });
+mongoose.connect('mongodb+srv://seandromine:z0JRqCLk6zWekT9n@medicluster.94paoel.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
-app.use(cookieParser());
 
 app.get('/', (req,res)=>{
   console.log(req.cookies)
   res.status(200).end();
 })
 
-app.get('/api/dashboard', userController.getPatients, (req, res) => {
+app.get('/api/dashboard/:email', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
 
