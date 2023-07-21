@@ -7,8 +7,6 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
-    const email = localStorage.getItem('email');
-    const name = localStorage.getItem('firstName');
 
     useEffect( () => {
         // console.log("useEffect fetch")
@@ -36,7 +34,7 @@ const Dashboard = props => {
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ email, update })
+            body: JSON.stringify({ _id, update })
         }).then((data => {
             reloadPatients();
         }))

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import mongoose from 'mongoose';
 
 
 const Signup = props => {
@@ -11,7 +12,7 @@ const Signup = props => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSignup = () => {
+    const handleSignup = () => { 
         fetch('/api/signup', {
             method: 'POST',
             headers: {
@@ -19,10 +20,14 @@ const Signup = props => {
             },
             body: JSON.stringify({ firstName, lastName, email, password })
         }).then((data) => {
-            localStorage.setItem('email', email);
-            localStorage.setItem('firstName', firstName);
+           return data.json()
+        })
+        .then((data) =>{
+            console.log(data);
+            // localStorage.setItem('_id', data._id);
+            // localStorage.setItem('firstName', firstName);
             console.log('hello');
-            navigate(`/dashboard/${email}`);
+            navigate(`/dashboard`);
         });
     };
     
