@@ -5,44 +5,40 @@ const userController = {
   // Create a new user in the Database
   // Their information will be sent in the request body
   // This should send the created user
-  async createUser(req, res, next) {
+  createUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
-    console.log(req.body);
+    const newUser = new User( {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    })
+    // console.log(req.body);
     // console.log('createUser fired');
     if (!firstName || !lastName || !email || !password)
       // return res.status(400).json({ error: 'Did not receive first name and/or last name'});
       return next({err : "Error ccreating a new user, missing first name, last name, email, or password"}) //JB
 
       // const userExists = await User.findOne({ email })
-
-
-
-      User.findOne({ email: email })
+      User.findOne({ email: email})
       .then((user)=>{
         if (user) {
           // res.status(400)
           // throw new Error('User already exists')
           return next({err: 'User already exists'});
-        } else {
-          const newUser = new User({
-            firstName,
-            lastName,
-            email,
-            password,
-          });
-      
-          newUser.save()
-            .then(() => {
-              res.locals.newUser = newUser;
-              next();
+        } })
+
+      newUser.save()
+        // User.create(newUser)
+        .then((data) => {
+            res.locals.user = data;
+            console.log("this is our new", data);
+            next();
               // res.status(200).json(newUser);
             })
-            .catch((err) => {
+        .catch((err) => {
               return {err: `failed to create new user, ${err}`};
             });
-        }
-          // console.log("Result :", user);
-      })
       // .catch((err)=>{
       //     console.log(err);
       // });
@@ -80,7 +76,7 @@ const userController = {
     .then((user) => {
       if  (!user)
         return next({ err: 'Error in userModel.getuser: Could not find user'});
-      console.log("Get patients fired!")
+      // console.log("Get patients fired!")
       res.locals.user = user;
       // console.log(res.locals.userPatients);
       return next();
