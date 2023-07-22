@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PatientList from './PatientList';
-
+import Navbar from './Navbar'
 const Dashboard = props => {
     const [patientsArray, setPatientsArray] = useState([]);
     const [firstName, setFirstName] = useState("");
@@ -54,6 +54,8 @@ const Dashboard = props => {
     }
 
     return (
+        <div>
+        <Navbar />
         <div className = 'dashboard-container'>
             <h2>Welcome, {userName}!</h2>
             <h3 className="patients-header">Patients</h3>
@@ -95,6 +97,7 @@ const Dashboard = props => {
                 </input><br></br>
                 <input type="submit"></input>
             </form>
+        </div>
         </div>
     );
 };
