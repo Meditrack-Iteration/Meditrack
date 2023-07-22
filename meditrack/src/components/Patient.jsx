@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MedList from './MedList';
 
-const Patient = ({ firstName, lastName, age, weight, medications }) => {
+const Patient = ({ firstName, lastName, age, weight, medications, patientId }) => {
   const [addMeds, setAddMeds] = useState(false);
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');
@@ -19,53 +19,74 @@ const Patient = ({ firstName, lastName, age, weight, medications }) => {
     setAddMeds(true);
   };
 
-  const handleAddMed = () => {
-    const email = localStorage.getItem('email');
+  // const handleAddMed = () => {
+  //   const email = localStorage.getItem('email');
 
+  //   const medication = {
+  //     name,
+  //     dosage,
+  //     frequency,
+  //     directions,
+  //   };
+
+  //   fetch(`/api/dashboard/${email}`)
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       const update = data.patients.map((patient) => {
+  //         if (patient.firstName === firstName) {
+  //           return {
+  //             ...patient,
+  //             medications: [...patient.medications, medication],
+  //           };
+  //         }
+  //         return patient;
+  //       });
+
+  //       console.log('update', update);
+
+  //       fetch(`/api/dashboard/patient`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ email, update }),
+  //       })
+  //         .then((data) => {
+  //           console.log(data);
+  //         })
+  //         .catch((error) => console.log(error));
+  //     })
+  //     .catch(() => console.log('got nothing'));
+
+  //   // setMedListKey((prevKey) => prevKey + 1);
+
+  //   setName('');
+  //   setDosage('');
+  //   setFrequency('');
+  //   setDirections('');
+  // };
+
+  const handleAddMed = () =>{
     const medication = {
-      name,
-      dosage,
-      frequency,
-      directions,
+        "name":name,
+        "dosage":dosage,
+        "frequency":frequency,
+        "directions":directions,
+        "patientId" : patientId
     };
 
-    fetch(`/api/dashboard/${email}`)
-      .then((data) => data.json())
-      .then((data) => {
-        const update = data.patients.map((patient) => {
-          if (patient.firstName === firstName) {
-            return {
-              ...patient,
-              medications: [...patient.medications, medication],
-            };
-          }
-          return patient;
-        });
-
-        console.log('update', update);
-
-        fetch(`/api/dashboard/patient`, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({ email, update }),
-        })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => console.log(error));
+    fetch(`/api/addMedication`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(medication),
+      })
+      .then(data => {
+          console.log(medication);
       })
       .catch(() => console.log('got nothing'));
-
-    // setMedListKey((prevKey) => prevKey + 1);
-
-    setName('');
-    setDosage('');
-    setFrequency('');
-    setDirections('');
-  };
-
+  }
   return (
     <div className="patient">
       <h4>

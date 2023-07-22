@@ -13,8 +13,7 @@ const ScheduleReminders = () => {
   const [selectedMedication, setSelectedMedication] = useState(null);
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    fetch(`/api/dashboard/${email}`)
+    fetch(`/api/dashboard`)
       .then((data) => data.json())
       .then((data) => {
         setPatientsArray(data.patients);
@@ -31,7 +30,6 @@ const ScheduleReminders = () => {
     }
 
     // Generate the dates array
-    const email = localStorage.getItem('email');
     const dates = generateDateArray(startDate, numDoses, frequency);
     console.log(dates);
 
@@ -49,7 +47,7 @@ const ScheduleReminders = () => {
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify({ email, update }),
+      body: JSON.stringify({ update }),
     }).catch(() => console.log('Error enrolling patient'));
   };
 

@@ -7,11 +7,12 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
+    
 
     useEffect( () => {
         // console.log("useEffect fetch")
-        const email = localStorage.getItem('email');
-        fetch(`/api/dashboard/${email}`)
+        // const email = localStorage.getItem('email');
+        fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
             setPatientsArray(data.patients);
@@ -22,27 +23,27 @@ const Dashboard = props => {
     
     const handleAddPatient = () => {
         
-            let update = [...patientsArray];
-            update.push({
+            // let update = [...patientsArray];
+            const newPatient = {
                 firstName,
                 lastName,
                 age,
                 weight
-            })
-        fetch(`/api/dashboard/patient`, {
+            }
+        fetch(`/api/addPatient`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ _id, update })
+            body: JSON.stringify(newPatient)//removed id temporarily JB 7/21
         }).then((data => {
             reloadPatients();
         }))
     }
 
     const reloadPatients = () => {
-        const email = localStorage.getItem('email');
-        fetch(`/api/dashboard/${email}`)
+        // const email = localStorage.getItem('email');
+        fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
             // console.log(data);
@@ -54,7 +55,7 @@ const Dashboard = props => {
 
     return (
         <div className = 'dashboard-container'>
-            <h2>Welcome, {name}!</h2>
+            <h2>Welcome, {"name"}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}
