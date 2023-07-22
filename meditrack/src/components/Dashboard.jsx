@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PatientList from './PatientList';
-
+import Navbar from './Navbar'
 const Dashboard = props => {
     const [patientsArray, setPatientsArray] = useState([]);
     const [firstName, setFirstName] = useState("");
@@ -10,10 +10,11 @@ const Dashboard = props => {
 
     useEffect( () => {
         // console.log("useEffect fetch")
-        const email = localStorage.getItem('email');
-        fetch(`/api/dashboard/${email}`)
+        // const _id = localStorage.getItem('email');
+        fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
+            setFirstName(data.firstName);
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("got nothing"))
@@ -34,15 +35,15 @@ const Dashboard = props => {
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ _id, update })
+            body: JSON.stringify({ update })
         }).then((data => {
             reloadPatients();
         }))
     }
 
     const reloadPatients = () => {
-        const email = localStorage.getItem('email');
-        fetch(`/api/dashboard/${email}`)
+        // const email = localStorage.getItem('email');
+        fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
             // console.log(data);
@@ -53,8 +54,10 @@ const Dashboard = props => {
     }
 
     return (
+        <div>
+        <Navbar />
         <div className = 'dashboard-container'>
-            <h2>Welcome, {name}!</h2>
+            <h2>Welcome, {firstName}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}
@@ -94,6 +97,7 @@ const Dashboard = props => {
                 </input><br></br>
                 <input type="submit"></input>
             </form>
+        </div>
         </div>
     );
 };
