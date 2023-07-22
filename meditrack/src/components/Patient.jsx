@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MedList from './MedList';
 
-const Patient = ({ firstName, lastName, age, weight, medications }) => {
+const Patient = ({ firstName, lastName, age, weight, medications, _id }) => {
   const [addMeds, setAddMeds] = useState(false);
   const [name, setName] = useState('');
   const [dosage, setDosage] = useState('');

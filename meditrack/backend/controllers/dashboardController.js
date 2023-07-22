@@ -7,11 +7,12 @@ const dashboardController = {
 
     async createPatient(req, res, next) {
         console.log(req.body);
-        const { update, email } = req.body;
+        const { update } = req.body;
+        const {_id} = req.cookies;
         console.log('entered create patient')  
         
            await User.findOneAndUpdate(
-              {email: email },
+              {_id: _id},
                {patients: update} ,
               { new: true })
             
