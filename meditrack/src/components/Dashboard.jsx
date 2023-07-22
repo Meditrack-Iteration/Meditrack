@@ -7,16 +7,14 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
-    const [username, setUsername] = useState("")
-    
-
+    const [userName, setUsername] = useState('')
     useEffect( () => {
         // console.log("useEffect fetch")
-        // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
             setUsername(data.firstName);
+            console.log(data)
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("got nothing"))
@@ -39,14 +37,12 @@ const Dashboard = props => {
             },
             body: JSON.stringify(newPatient)//removed id temporarily JB 7/21
         }).then((data => {
+            console.log(data)
             reloadPatients();
         }))
     }
 
     const reloadPatients = () => {
-        // const email = localStorage.getItem('email');
-        fetch(`/api/dashboard`)
-        // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
@@ -61,7 +57,7 @@ const Dashboard = props => {
         <div>
         <Navbar />
         <div className = 'dashboard-container'>
-            <h2>Welcome, {username}!</h2>
+            <h2>Welcome, {userName}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list"   patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}

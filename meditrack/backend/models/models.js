@@ -124,17 +124,34 @@ const patientSchema = new Schema({
 const Patient = mongoose.model('patient', patientSchema)
 
 const userSchema = new Schema({
-    // array of patients
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    // age: {type: Number, required: true},
-    // weight: {type: Number, required: true},
-    email: {type: String, required: true},
-    password: {type: String, required: true},
-    patients: {type: [patientSchema], required: false}
+  // array of patients
+  _id: { type: Schema.Types.ObjectId, auto: true },
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
+  // age: {type: Number, required: true},
+  // weight: {type: Number, required: true},
+  email: {type: String, required: true, unique: true},
+  password: {type: String, required: true},
+  patients: {type: [patientSchema], required: false}
 })
 
 const User = mongoose.model('user', userSchema)
+
+userSchema.pre('save', async function(next) {
+    const user = this;
+  
+    if (!user.isModified('password')) return next();
+  
+    try {
+      const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+      const hash = await bcrypt.hash(user.password, salt);
+      user.password = hash;
+  
+      return next();
+    } catch (err) {
+      return next(err);
+    }
+  })
 
 
 

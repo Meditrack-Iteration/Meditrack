@@ -18,7 +18,6 @@ const PatientCalendar = props => {
   const [selectedPatient, setSelectedPatient] = useState([]);
   console.log(allEvents)
   useEffect( () => {
-    // const email = localStorage.getItem('email');
     fetch(`/api/dashboard`)
     .then((data) => data.json()) 
     .then((data) => {
