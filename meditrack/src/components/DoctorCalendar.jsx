@@ -12,8 +12,8 @@ const DoctorCalendar = () => {
   const [timeSelected, setTimeSelected] = useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    fetch(`/api/dashboard/${email}`)
+    // const email = localStorage.getItem('email');
+    fetch(`/api/dashboard`)
       .then((data) => data.json())
       .then((data) => {
         setPatientsArray(data.patients);

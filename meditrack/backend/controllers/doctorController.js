@@ -21,7 +21,7 @@ doctorController.login= (req,res,next)=>{
     })
   
 }
-
+//handles doctor sign up
 doctorController.signup=(req,res,next)=>{
     const{firstName, lastName, email, password}=req.body;
     const newDoctor=new Doctor({
@@ -61,6 +61,21 @@ doctorController.signup=(req,res,next)=>{
       // });
 }
 
+//handles finding a doctor
+doctorController.getAllDoctors= async(req,res,next)=>{
+
+  try{
+    const doclist = await Doctor.find();
+    console.log(doclist);
+    res.locals.doclist=doclist;
+    return next();
+  }
+  catch(err){
+    console.log('error finding doctor in doctorController.getAllDoctors');
+    return next(err);
+  }
+
+}
 
 
 module.exports = { doctorController }
