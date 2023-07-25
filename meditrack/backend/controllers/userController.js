@@ -71,8 +71,8 @@ const userController = {
   },
 
   async getPatients(req, res, next) {
-    const { email } = req.params;
-    User.findOne({ email: email })
+    const { _id } = req.cookies;
+    User.findOne({_id : _id })
     .then((user) => {
       if  (!user)
         return next({ err: 'Error in userModel.getuser: Could not find user'});

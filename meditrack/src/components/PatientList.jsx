@@ -9,6 +9,7 @@ const PatientList = (props) => {
         <Patient
           className="patient"
           key={patient._id}
+          patientId={patient._id}
           firstName={patient.firstName}
           lastName={patient.lastName}
           age={patient.age}

@@ -7,10 +7,11 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
+    
 
     useEffect( () => {
         // console.log("useEffect fetch")
-        // const _id = localStorage.getItem('email');
+        // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
@@ -23,25 +24,27 @@ const Dashboard = props => {
     
     const handleAddPatient = () => {
         
-            let update = [...patientsArray];
-            update.push({
+            // let update = [...patientsArray];
+            const newPatient = {
                 firstName,
                 lastName,
                 age,
                 weight
-            })
-        fetch(`/api/dashboard/patient`, {
+            }
+        fetch(`/api/addPatient`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ update })
+            body: JSON.stringify(newPatient)//removed id temporarily JB 7/21
         }).then((data => {
             reloadPatients();
         }))
     }
 
     const reloadPatients = () => {
+        // const email = localStorage.getItem('email');
+        fetch(`/api/dashboard`)
         // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
