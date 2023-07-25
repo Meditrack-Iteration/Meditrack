@@ -1,5 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom'
+
+const CLIENT_ID = "1f252291952872a24f19"
+
+function loginWithGithub() {
+    window.location.assign("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID)
+  }
 
 const Login = props => {
     
@@ -10,6 +16,13 @@ const Login = props => {
     const [urlstr, seturlstr]=useState("/api/login");
 
     const navigate = useNavigate();
+
+    useEffect(()=> {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString)
+        const codeParam = urlParams.get("code")
+        console.log(codeParam)
+    }, [])
 
     const handleAccountType=(e)=>{
         e.preventDefault();
@@ -81,6 +94,7 @@ const Login = props => {
 
                 <input type="submit"></input>
             </form>
+            <button onClick={loginWithGithub}>Login with Github</button>
             {errorMessage && <p className="login-error">Email or password is incorrect!</p>}
         </div>
     );
