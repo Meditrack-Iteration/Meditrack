@@ -3,6 +3,7 @@ import Patient from './Patient';
 
 const PatientList = (props) => {
   const { patients } = props;
+
   return (
     <div className="patients-list">
       {patients.map((patient) => (
