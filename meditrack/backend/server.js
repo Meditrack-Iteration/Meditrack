@@ -8,6 +8,7 @@ const { medicationController } = require('./controllers/medicationController')
 const port = 3000;
 const mongoose = require('mongoose');
 const { cookieController } = require('./controllers/cookieController');
+const { patientController } = require('./controllers/patientController');
 const { doctorController } = require('./controllers/doctorController');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
 
@@ -82,6 +83,22 @@ app.get('/api/doctor', doctorController.getAllDoctors, (req, res) => {
 // app.post('/api/doctor', userController.createDoctor, (req, res) => {
 //   res.status(200).json({message: 'Doctor created!'});
 // });
+
+//JB New routes
+app.post('/api/addPatient', patientController.addPatient, (req,res) => {
+  return res.status(200).send('Patient created')
+})
+app.post('/api/addMedication', medicationController.addMedication, (req,res) => {
+  return res.status(200).send('Medication created')
+})
+
+app.post('/api/addMedicationLog', medicationController.addMedicationLog, (req,res) => {
+  return res.status(200).send('Medication log entry created')
+})
+app.post('/api/addMedicationSchedule', medicationController.addMedicationSchedule, (req,res) => {
+  return res.status(200).json(res.locals.obj)
+})
+
 
 // function sendTextMessage() {
 //   client.message.create({

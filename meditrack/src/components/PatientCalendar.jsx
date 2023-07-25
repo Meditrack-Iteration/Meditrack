@@ -18,8 +18,8 @@ const PatientCalendar = props => {
   const [selectedPatient, setSelectedPatient] = useState([]);
 
   useEffect( () => {
-    const email = localStorage.getItem('email');
-    fetch(`/api/dashboard/${email}`)
+    // const email = localStorage.getItem('email');
+    fetch(`/api/dashboard`)
     .then((data) => data.json()) 
     .then((data) => {
         setPatientsArray(data.patients);
@@ -35,7 +35,7 @@ const PatientCalendar = props => {
   
         setAllEvents(events);
     })
-    .catch(() => console.log("got nothing"))
+    .catch((err) => console.log("patientCalendar ",err))
 
 }, []);
 
@@ -79,34 +79,59 @@ const PatientCalendar = props => {
       patientFirstName: selectedPatient.firstName,
     }]);
   
-    const email = localStorage.getItem('email');
-  
-    let update = [];
-    fetch(`/api/dashboard/${email}`)
-      .then((data) => data.json())
-      .then((data) => {
-        update = [...data.patients];
-        for (let i = 0; i < update.length; i++) {
-          if (update[i].firstName === selectedPatient.firstName) {
-            update[i].medicationLog.push(eventPayload);
-          }
-        }
-        console.log('update', update);
-        fetch('/api/dashboard/patient', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, update })
-        })
-          .then(response => response.json())
-          .then(data => {
-            setNewEvent({ title: '', start: null });
+    // const email = localStorage.getItem('email');
+  //Below
+    // let update = [];
+    // fetch(`/api/dashboard`)
+    //   .then((data) => data.json())
+    //   .then((data) => {
+    //     update = [...data.patients];
+    //     for (let i = 0; i < update.length; i++) {
+    //       if (update[i].firstName === selectedPatient.firstName) {
+    //         update[i].medicationLog.push(eventPayload);
+    //       }
+    //     }
+    //     console.log('update', update);
+    //     fetch('/api/dashboard/patient', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify({ email, update })
+    //     })
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         setNewEvent({ title: '', start: null });
+    //       })
+    //       .catch(error => {
+    //         console.error("Could not process POST request");
+    //       });
+    //   });
+
+    const medLog = {
+      //patientId,medication, date, notes
+      patientId : selectedPatient._id,
+      medication : newEvent.title,
+      date: newEvent.start,
+      notes: "..."
+    }
+    fetch('/api/addMedicationLog', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(medLog)
           })
-          .catch(error => {
-            console.error("Could not process POST request");
-          });
-      });
+            // .then(response => response.json())
+            .then(data => {
+              setNewEvent({ title: '', start: null });
+              console.log('returned from server - medication log', medLog)
+            })
+            .catch(error => {
+              console.error("Could not process POST request");
+            });
+       
+
   };
   
 

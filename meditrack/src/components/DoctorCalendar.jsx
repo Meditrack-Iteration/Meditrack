@@ -14,6 +14,8 @@ const DoctorCalendar = () => {
   useEffect(() => {
     // const email = localStorage.getItem('email');
     fetch(`/api/dashboard`)
+    // const email = localStorage.getItem('email');
+    fetch(`/api/dashboard`)
       .then((data) => data.json())
       .then((data) => {
         setPatientsArray(data.patients);
