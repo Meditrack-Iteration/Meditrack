@@ -123,7 +123,6 @@ const patientSchema = new Schema({
 const Patient = mongoose.model('patient', patientSchema)
 
 const userSchema = new Schema({
-<<<<<<< HEAD
     // array of patients
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
@@ -133,17 +132,6 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     patients: {type: [patientSchema], required: false}
 })
-=======
-    _id: { type: Schema.Types.ObjectId, auto: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-
-    email: { type: String, required: true, unique: true },
-
-    password: { type: String, required: true },
-    patients: [{ type: Schema.Types.ObjectId, ref: 'patient' }]
-});
->>>>>>> Dev
 
 const User = mongoose.model('user', userSchema)
 
@@ -158,4 +146,4 @@ module.exports = {
     Doctor,
     MedSchedule
 }
->>>>>>> Dev
+
