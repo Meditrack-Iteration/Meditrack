@@ -7,7 +7,8 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
-    const [userName, setuserName] = useState('')
+    
+
     useEffect( () => {
         // console.log("useEffect fetch")
         fetch(`/api/dashboard`)
@@ -23,19 +24,19 @@ const Dashboard = props => {
     
     const handleAddPatient = () => {
         
-            let update = [...patientsArray];
-            update.push({
+            // let update = [...patientsArray];
+            const newPatient = {
                 firstName,
                 lastName,
                 age,
                 weight
-            })
-        fetch(`/api/dashboard/patient`, {
+            }
+        fetch(`/api/addPatient`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ update })
+            body: JSON.stringify(newPatient)//removed id temporarily JB 7/21
         }).then((data => {
             console.log(data)
             reloadPatients();
