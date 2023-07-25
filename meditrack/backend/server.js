@@ -78,7 +78,7 @@ app.post('/api/addMedicationLog', medicationController.addMedicationLog, (req,re
   return res.status(200).send('Medication log entry created')
 })
 app.post('/api/addMedicationSchedule', medicationController.addMedicationSchedule, (req,res) => {
-  return res.status(200).send('Medication schedule entry created')
+  return res.status(200).json(res.locals.obj)
 })
 
 

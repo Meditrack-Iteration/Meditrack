@@ -16,12 +16,12 @@ const medScheduleSchema = new mongoose.Schema({
 
 const MedSchedule = mongoose.model('medSchedule', medScheduleSchema)
 
-const futureIntakeSchema = new mongoose.Schema({
-  upcoming : [medScheduleSchema]
+// const futureIntakeSchema = new mongoose.Schema({
+//   upcoming : [medScheduleSchema]
 
- })
+//  })
 
-const FutureIntake = mongoose.model('futureIntake', futureIntakeSchema)
+// const FutureIntake = mongoose.model('futureIntake', futureIntakeSchema)
 
 
 
@@ -51,7 +51,7 @@ const patientSchema = new Schema({
     weight: {type: Number, required: true},
     medications: {type: [medicationSchema], required: false},
     medicationLog : {type: [medicationLogSchema], required : false},
-    futureIntake : {type: futureIntakeSchema, required: false} 
+    medSchedule : {type: [medScheduleSchema], required: false} 
 })
 
 const Patient = mongoose.model('patient', patientSchema)
@@ -76,7 +76,7 @@ module.exports = {
     Patient,
     User,
     MedicationLog,
-    FutureIntake,
+    // FutureIntake,
     Doctor,
     MedSchedule
 }
