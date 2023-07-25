@@ -9,6 +9,7 @@ const port = 3000;
 const mongoose = require('mongoose');
 const { cookieController } = require('./controllers/cookieController');
 const { patientController } = require('./controllers/patientController');
+const { doctorController } = require('./controllers/doctorController');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
 
 mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true });
@@ -30,10 +31,25 @@ app.post('/api/signup', userController.createUser, cookieController.setCookie,  
   console.log('new user created and saved', res.locals.newUser);
     res.status(200).json(res.locals.newUser);
 })
+app.post('/api/login/doctor',doctorController.login, cookieController.setDoctorCookie,(req,res)=>{
 
+  res.status(200).json(res.locals.doctor);
+})
+app.post('/api/signup/doctor',doctorController.signup,cookieController.setDoctorCookie,(req,res)=>{
+  console.log('I AM IN SERVER',res.locals.doctor);
+  res.status(200).json(res.locals.doctor);
+})
 app.post('/api/login', userController.getUser, cookieController.setCookie, (req, res) => {
   res.status(200).json(res.locals.user);
 })
+
+//login and signup routes for doctor
+// app.post('/api/login/doctor',doctorController.login,cookieController.setDoctorCookie,(req,res)=>{
+//   res.status(200).json(res.locals.doctor);
+// })
+// app.post('/api/signup/doctor',doctorController.signup,cookieController.setDoctorCookie,(req,res)=>{
+//   res.status(200).json(res.locals.doctor);
+// })
 
 //update user
 app.put('/api/dashboard/:email', userController.updateUser, (req, res) => {
@@ -117,3 +133,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => console.log(`Server running on ${port}`));
+
+
+//test git push

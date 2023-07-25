@@ -1,27 +1,86 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
+const SALT_WORK_FACTOR = 10;
 
+const appointmentSchema=new Schema({
+  patientName:{
+      type:String,
+      required:true
+  },
+  appointmentTime:{
+      type:Date,
+      required:true
+  }
+});
+
+const Appointment = mongoose.model('appointment', appointmentSchema);
 const doctorSchema = new mongoose.Schema({
-    name: {type: String, require: true},
-    hoursAvailable: {type: Array, require: true} 
-})
+  _id: { type: Schema.Types.ObjectId, auto: true },
+    firstName: { type: String, require: true },
+    lastName: { type: String, require: true },
+    email:{
+        type:String,
+        required: true,
+        unique: true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    availability:{
+        monday: {
+            type: [
+              {
+                start: { type: String, default: '9:00 AM' },
+                end: { type: String, default: '5:00 PM' },
+              },
+            ],
+            default: () => [{ start: '9:00 AM', end: '5:00 PM' }],
+          },
+          tuesday: {
+            type: [
+              {
+                start: { type: String, default: '9:00 AM' },
+                end: { type: String, default: '5:00 PM' },
+              },
+            ],
+            default: () => [{ start: '9:00 AM', end: '5:00 PM' }],
+          },
+          wednesday: {
+            type: [
+              {
+                start: { type: String, default: '9:00 AM' },
+                end: { type: String, default: '5:00 PM' },
+              },
+            ],
+            default: () => [{ start: '9:00 AM', end: '5:00 PM' }],
+          },
+          thursdauy: {
+            type: [
+              {
+                start: { type: String, default: '9:00 AM' },
+                end: { type: String, default: '5:00 PM' },
+              },
+            ],
+            default: () => [{ start: '9:00 AM', end: '5:00 PM' }],
+          },
+          friday: {
+            type: [
+              {
+                start: { type: String, default: '9:00 AM' },
+                end: { type: String, default: '5:00 PM' },
+              },
+            ],
+            default: () => [{ start: '9:00 AM', end: '5:00 PM' }],
+          },
+        },
+        appointments: [appointmentSchema],
+      });
 
-const Doctor = mongoose.model('doctor', doctorSchema)
 
-const medScheduleSchema = new mongoose.Schema({
-  medication: {type : String, require : false},
-  dates : { type: [Date], required : true },
-  //startDate: {type: Date, required: true}
- })
-
-const MedSchedule = mongoose.model('medSchedule', medScheduleSchema)
-
-// const futureIntakeSchema = new mongoose.Schema({
-//   upcoming : [medScheduleSchema]
-
-//  })
-
-// const FutureIntake = mongoose.model('futureIntake', futureIntakeSchema)
+const Doctor = mongoose.model('doctor', doctorSchema);
 
 
 
@@ -57,6 +116,7 @@ const patientSchema = new Schema({
 const Patient = mongoose.model('patient', patientSchema)
 
 const userSchema = new Schema({
+<<<<<<< HEAD
     // array of patients
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
@@ -66,6 +126,17 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     patients: {type: [patientSchema], required: false}
 })
+=======
+    _id: { type: Schema.Types.ObjectId, auto: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+
+    email: { type: String, required: true, unique: true },
+
+    password: { type: String, required: true },
+    patients: [{ type: Schema.Types.ObjectId, ref: 'patient' }]
+});
+>>>>>>> Dev
 
 const User = mongoose.model('user', userSchema)
 
@@ -80,3 +151,4 @@ module.exports = {
     Doctor,
     MedSchedule
 }
+>>>>>>> Dev
