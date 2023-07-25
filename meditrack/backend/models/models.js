@@ -82,6 +82,13 @@ const doctorSchema = new mongoose.Schema({
 
 const Doctor = mongoose.model('doctor', doctorSchema);
 
+const medScheduleSchema = new mongoose.Schema({
+    medication: {type : String, require : false},
+    dates : { type: [Date], required : true },
+    //startDate: {type: Date, required: true}
+   })
+  
+  const MedSchedule = mongoose.model('medSchedule', medScheduleSchema)
 
 
 const medicationLogSchema = new mongoose.Schema({
