@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require("body-parser")
+const fetch = (...args) =>
+    import("node-fetch").then(({default: fetch}) => fetch(...args));
 // const dotenv = require('dotenv').config();
 const { userController } = require('./controllers/userController')
 const { dashboardController } = require('./controllers/dashboardController')
@@ -10,6 +13,8 @@ const mongoose = require('mongoose');
 const { cookieController } = require('./controllers/cookieController');
 const { doctorController } = require('./controllers/doctorController');
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
+const CLIENT_ID = "1f252291952872a24f19"
+const CLIENT_SECRET = "069daa824402315e81c41ce4251aa18f86dea563"
 
 mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true });
 mongoose.connection.once('open', () => {
