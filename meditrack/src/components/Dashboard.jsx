@@ -15,6 +15,7 @@ const Dashboard = props => {
         .then((data) => {
             setUsername(data.firstName);
             console.log(data)
+            setFirstName(data.firstName);
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("got nothing"))
