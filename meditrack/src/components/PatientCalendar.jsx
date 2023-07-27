@@ -35,7 +35,7 @@ const PatientCalendar = props => {
   
         setAllEvents(events);
     })
-    .catch(() => console.log("got nothing"))
+    .catch((err) => console.log("patientCalendar ",err))
 
 }, []);
 
