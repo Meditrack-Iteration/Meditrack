@@ -16,6 +16,7 @@ const appointmentSchema=new Schema({
 });
 
 const Appointment = mongoose.model('appointment', appointmentSchema);
+
 const doctorSchema = new mongoose.Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
     firstName: { type: String, require: true },
@@ -144,6 +145,7 @@ module.exports = {
     Patient,
     User,
     MedicationLog,
+    Appointment,
     // FutureIntake,
     Doctor,
     MedSchedule,

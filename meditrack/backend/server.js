@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require("body-parser")
+const fetch = (...args) =>
+    import("node-fetch").then(({default: fetch}) => fetch(...args));
 // const dotenv = require('dotenv').config();
 const { userController } = require('./controllers/userController')
 const { dashboardController } = require('./controllers/dashboardController')
@@ -10,7 +13,11 @@ const mongoose = require('mongoose');
 const { cookieController } = require('./controllers/cookieController');
 const { patientController } = require('./controllers/patientController');
 const { doctorController } = require('./controllers/doctorController');
+const {gitHubController} = require("./controllers/gitHubController")
 const client = require('twilio')('AC08ded748a1d1c45ddbc34311218ad235', '35646b7d7c1f32510417fefe5e00412b');
+const CLIENT_ID = "1f252291952872a24f19"
+const CLIENT_SECRET = "069daa824402315e81c41ce4251aa18f86dea563"
+
 
 mongoose.connect('mongodb+srv://johnnyb7184:johnnyb7184@medicluster.l6nzmgv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true });
 mongoose.connection.once('open', () => {
@@ -22,10 +29,57 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization-8');
+  next();
+});
 
 app.get('/api/dashboard', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
+
+app.get("/api/getAccessToken", gitHubController.getAccessToken, gitHubController.setAccessCookie, gitHubController.getUserData, (req,res) =>{
+  console.log("this is last middleware test1", res.locals.access);
+  console.log("this is last middleware test1", res.locals.gitUser);
+  return res.status(200).json(res.locals.gitUser)
+    
+})
+
+// app.get("/api/getAccessToken", async function(req,res,) {
+//   console.log("this is the query code", req.query.code);
+//   const params = "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&code=" + req.query.code;
+//   await fetch("https://github.com/login/oauth/access_token" + params, {
+//     method: "POST",
+//     headers: {
+//       "Accept": "application/json"
+//     }
+//   }).then((response) => {
+//     return response.json();
+//   }).then((data)=>{
+//       res.locals.access = data
+//       console.log(data);
+//   });
+
+// })
+
+// app.get("/api/getUserData", async function (req, res) {
+//   console.log("this is the auth key", req.headers)
+//   console.log("this is the auth key", req.get("authorization"))
+//   req.get("authorization");
+//   await fetch ("https://api.github.com/user", {
+//     method: "GET",
+//     headers: {
+//       "Authorization": req.get("authorization"),
+//       'X-GitHub-Api-Version': '2022-11-28'
+//     }
+//   }).then((response)=>{
+//     return response.json();
+//   }).then((data)=>{
+//     console.log(data);
+//     res.json(data);
+//   })
+// })
 
 app.post('/api/signup', userController.createUser, cookieController.setCookie,  (req, res) => {
   console.log('new user created and saved', res.locals.newUser);
