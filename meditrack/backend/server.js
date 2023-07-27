@@ -128,13 +128,18 @@ app.delete('/api/dashboard/delete/:firstName', dashboardController.deletePatient
   res.status(200).json({message: 'Patient deleted!'})
 })
 
-app.get('/api/doctor', userController.getDoctors, (req, res) => {
-  res.status(200).json(res.locals.doctors);
+
+//Vicky:this is the request to get doctorlist
+app.put('/api/doctor/appointment', doctorController.appointments,(req,res)=>{
+  return res.status(200).send({available:res.locals.available});
+})
+app.get('/api/doctor', doctorController.getAllDoctors, (req, res) => {
+  res.status(200).json(res.locals.doclist);
 });
 
-app.post('/api/doctor', userController.createDoctor, (req, res) => {
-  res.status(200).json({message: 'Doctor created!'});
-});
+// app.post('/api/doctor', userController.createDoctor, (req, res) => {
+//   res.status(200).json({message: 'Doctor created!'});
+// });
 
 //JB New routes
 app.post('/api/addPatient', patientController.addPatient, (req,res) => {

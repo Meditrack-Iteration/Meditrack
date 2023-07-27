@@ -18,7 +18,7 @@ const Dashboard = props => {
             setFirstName(data.firstName);
             setPatientsArray(data.patients);
         })
-        .catch(() => console.log("got nothing"))
+        .catch(() => console.log("error in dashboard.js"))
 
     }, []);
     

@@ -119,31 +119,31 @@ const userController = {
     if (data) return next();
   },
 
-  async createDoctor(req, res, next) {
-    const { name, hoursAvailable } = req.body;
+  // async createDoctor(req, res, next) {
+  //   const { name, hoursAvailable } = req.body;
     
-    const newDoctor = new Doctor({
-      name,
-      hoursAvailable,
-    });
+  //   const newDoctor = new Doctor({
+  //     name,
+  //     hoursAvailable,
+  //   });
 
-    newDoctor.save()
-            .then(() => {
-              res.locals.newDoctor = newDoctor;
-              next();
-            })
-            .catch((err) => {
-              return {err: `failed to create new Doctor`};
-            });
-  },
+  //   newDoctor.save()
+  //           .then(() => {
+  //             res.locals.newDoctor = newDoctor;
+  //             next();
+  //           })
+  //           .catch((err) => {
+  //             return {err: `failed to create new Doctor`};
+  //           });
+  // },
 
-  async getDoctors(req, res, next) {
-    console.log('fetched doctors');
+  // async getDoctors(req, res, next) {
+  //   console.log('fetched doctors');
 
-    await Doctor.find()
-    .then(data => res.locals.doctors = data);
-    next();
-  }
+  //   await Doctor.find()
+  //   .then(data => res.locals.doctors = data);
+  //   next();
+  // }
 
 };
 
