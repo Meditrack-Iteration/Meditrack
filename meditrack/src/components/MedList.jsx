@@ -1,52 +1,26 @@
 import React, { useState } from 'react';
 
-const MedList = ({ medications, firstName }) => {
-
+const MedList = ({ medications, firstName, patientId }) => {
+  
     const [patientsArray, setPatientsArray] = useState([]);
     
-    const deleteMedication = (medName) => {
-        const email = localStorage.getItem('email')
-        
-        fetch(`/api/dashboard/${email}`)
-          .then((data) => data.json())
-          .then((data) => {
-            setPatientsArray(data.patients);
-          });
+    const handleDeleteMedication = (medicationId) => {
+    //post request sending
+    const toDelete = {
+      "patientId" : patientId,
+      "medicationId": medicationId
     
-        //   let update = [...patientsArray];
-        const updatedMeds = [];
-        let update = [...patientsArray];
-        //iterate through patients
-          for(let i = 0; i < update.length; i++){
-            //if - this is the patient that we are updating
-            if(update[i].firstName !== firstName){
-                //iterate through
-                for(let y = 0; y < update[i].medications.length; y++){
-                    if(update[i].medications[y] !== medName){
-                    updatedMeds.push(update[i].medications[y])
-                }
-            }
-            //replace current medications with updateMeds array
-            update[i].medications = [...updatedMeds];//can this be done? not sure if patiendsArray can be reassigned;
-                }
-          }
+    };
+    console.log("patient id" , patientId)
+    console.log("med id" , medicationId)
+    fetch(`/api/removeMedication`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(toDelete),
+      })
 
-          console.log(update);
-
-        //   make post request to update patientsArray
-
-          
-          fetch(`/api/dashboard/patient`, {
-            method: 'POST',
-            headers: {
-              'Content-type': 'application/json',
-            },
-            body: JSON.stringify({ email, update }),
-          })
-            .then((data) => {
-              console.log(data);
-            })
-            .catch((error) => console.log(error));
 
     }
     return(
@@ -58,9 +32,8 @@ const MedList = ({ medications, firstName }) => {
                     <p>Dosage: {medication.dosage}</p>
                     <p>Frequency: {medication.frequency}</p>
                     <p>Directions: {medication.directions}</p>
-                    <button onClick = {() => {
-                        deleteMedication(medication.name);
-
+                    <button  className = "deleteButton" onClick = {() => {
+                      handleDeleteMedication(medication._id);
                     }}>Delete Medication</button>
                 </div>
             )

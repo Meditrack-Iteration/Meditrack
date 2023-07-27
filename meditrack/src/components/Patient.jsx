@@ -16,7 +16,7 @@ const Patient = ({ firstName, lastName, age, weight, medications, patientId }) =
   };
 
   const handleAddClick = () => {
-    setAddMeds(true);
+    setAddMeds(!addMeds);
   };
 
   // const handleAddMed = () => {
@@ -65,7 +65,20 @@ const Patient = ({ firstName, lastName, age, weight, medications, patientId }) =
   //   setFrequency('');
   //   setDirections('');
   // };
+  const handleDeletePatient = () => {
+    //post request sending
+    const toDelete = {"patientId" : patientId};
+    fetch(`/api/removePatient`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(toDelete),
+      })
 
+
+
+  }
   const handleAddMed = () =>{
     const medication = {
         "name":name,
@@ -89,18 +102,20 @@ const Patient = ({ firstName, lastName, age, weight, medications, patientId }) =
   }
   return (
     <div className="patient">
+      {/* Patient Info */}
       <h4>
         {firstName} {lastName}
       </h4>
       <p>Age: {age}</p>
       <p>Weight: {weight}</p>
+      {/* Show Medications */}
       <button className="show-meds" onClick={handleShowMeds}>
         {showMeds ? 'Hide Medications' : 'Show Medications'}
       </button>
-      {showMeds && <MedList key={medListKey} medications={medications} firstName={firstName}/>}
-      <br />
+      {showMeds && <MedList key={medListKey} medications={medications} firstName={firstName} patientId = {patientId}/>}
+      {/* Add Medication */}
       <button className="add-med" onClick={handleAddClick}>
-        Add Medication
+      {addMeds ? 'Collapse Add Medication' : 'Add Medication'}
       </button>
       {addMeds && (
         <div className="form-container">
@@ -140,6 +155,8 @@ const Patient = ({ firstName, lastName, age, weight, medications, patientId }) =
           </form>
         </div>
       )}
+      {/* Delete Medication */}
+      <button className = "deleteButton" onClick = {handleDeletePatient}>Delete {firstName}</button>
     </div>
   );
 };
