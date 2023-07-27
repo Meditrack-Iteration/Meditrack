@@ -66,7 +66,7 @@ doctorController.getAllDoctors= async(req,res,next)=>{
 
   try{
     const doclist = await Doctor.find();
-    console.log(doclist);
+    // console.log(doclist);
     res.locals.doclist=doclist;
     return next();
   }
@@ -77,5 +77,40 @@ doctorController.getAllDoctors= async(req,res,next)=>{
 
 }
 
+doctorController.appointments=async(req,res,next)=>{
+  console.log('logging req.body for appointments controller',req.body);
+  try{
+    const doctor=await Doctor.findOne({firstName: req.body.firstName});
+    // console.log('logging doctor for appointments controller',doctor);
+    
+    const appointmentExists = await doctor.appointments.some(
+      (appointment)=>{
+
+        const appointmentTime = new Date(appointment.appointmentTime);
+        const requestedAppointmentTime = new Date(req.body.appointments);
+  
+        // Compare the Date objects
+        return appointmentTime.getTime() === requestedAppointmentTime.getTime();
+      }
+    );
+
+    if (appointmentExists) {
+      res.locals.available = false;
+    } 
+    if(!appointmentExists){
+      doctor.appointments.push({
+        patientName: req.body.patient,
+        appointmentTime: req.body.appointments,
+      });
+      await doctor.save();
+      res.locals.available = true;
+      console.log('value of available',res.locals.available);
+    }
+
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+};
 
 module.exports = { doctorController }

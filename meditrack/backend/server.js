@@ -76,6 +76,9 @@ app.delete('/api/dashboard/delete/:firstName', dashboardController.deletePatient
 
 
 //Vicky:this is the request to get doctorlist
+app.put('/api/doctor/appointment', doctorController.appointments,(req,res)=>{
+  return res.status(200).send({available:res.locals.available});
+})
 app.get('/api/doctor', doctorController.getAllDoctors, (req, res) => {
   res.status(200).json(res.locals.doclist);
 });
