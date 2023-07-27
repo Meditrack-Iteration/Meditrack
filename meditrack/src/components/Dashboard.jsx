@@ -12,14 +12,13 @@ const Dashboard = props => {
 
     useEffect( () => {
         // console.log("useEffect fetch")
-        // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
             setUsername(data.firstName);
             setPatientsArray(data.patients);
         })
-        .catch(() => console.log("got nothing"))
+        .catch(() => console.log("error in dashboard.js"))
 
     }, [patientsArray]);
     
@@ -39,14 +38,12 @@ const Dashboard = props => {
             },
             body: JSON.stringify(newPatient)//removed id temporarily JB 7/21
         }).then((data => {
+            console.log(data)
             reloadPatients();
         }))
     }
 
     const reloadPatients = () => {
-        // const email = localStorage.getItem('email');
-        fetch(`/api/dashboard`)
-        // const email = localStorage.getItem('email');
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {

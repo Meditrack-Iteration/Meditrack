@@ -3,7 +3,7 @@ import ReactCalendar from 'react-calendar';
 import { add, format } from 'date-fns';
 
 const DoctorCalendar = () => {
-  const [date, setDate] = useState({ justDate: null, dateTime: null });
+  const [date, setDate] = useState({ justDate: null, hoursMinutes: null });
   const [patientsArray, setPatientsArray] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [doctors, setDoctors] = useState([]);
@@ -12,7 +12,9 @@ const DoctorCalendar = () => {
   const [timeSelected, setTimeSelected] = useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
+    // const email = localStorage.getItem('email');
+    fetch(`/api/dashboard`)
+    // const email = localStorage.getItem('email');
     fetch(`/api/dashboard`)
       .then((data) => data.json())
       .then((data) => {
@@ -26,39 +28,40 @@ const DoctorCalendar = () => {
       .catch(() => console.log("got nothing"));
   }, []);
 
+  const minuteInterval=60;
+  const startTime=9*60;
+  const endTime=17*60;
+
+
   const getTimes = () => {
     if (!date.justDate || !selectedDoctor) return [];
 
     const { justDate } = date;
 
-    const selectedDoctorData = doctors.find((doctor) => doctor.name === selectedDoctor.name);
+    const selectedDoctorData = doctors.find((doctor) => doctor.firstName === selectedDoctor.firstName);
 
-    if (!selectedDoctorData || !selectedDoctorData.hoursAvailable) return [];
+    if (!selectedDoctorData || !selectedDoctorData.appointments) return [];
 
-    const beginning = add(justDate, { hours: selectedDoctorData.hoursAvailable[0] });
-    const end = add(justDate, {
-      hours: selectedDoctorData.hoursAvailable[selectedDoctorData.hoursAvailable.length - 1]
-    });
-    const interval = 30;
+    const availableTimes = [];
+    let currentTime = add(justDate, { minutes: startTime });
 
-    const times = [];
-
-    for (let i = beginning; i <= end; i = add(i, { minutes: interval })) {
-      times.push(i);
+    while (currentTime <= add(justDate, { minutes: endTime })) {
+      availableTimes.push(currentTime);
+      currentTime = add(currentTime, { minutes: minuteInterval });
     }
 
-    return times;
+    return availableTimes;
   };
 
   const handlePatientSelection = (patient) => {
     setSelectedPatient(patient);
-    setDate({ justDate: null, dateTime: null });
+    setDate({ justDate: null, hoursMinutes: null });
     setSelectedDoctor(null);
     setTimeSelected(false);
   };
 
   const handleDoctorSelection = (doctorName) => {
-    const selectedDoctorData = doctors.find((doctor) => doctor.name === doctorName);
+    const selectedDoctorData = doctors.find((doctor) => doctor.firstName === doctorName);
     setSelectedDoctor(selectedDoctorData);
 
     if (selectedDoctorData && date.justDate) {
@@ -72,13 +75,39 @@ const DoctorCalendar = () => {
     }
   };
 
-  const handleScheduleAppointment = () => {
-    if (!selectedPatient || !date.dateTime || !selectedDoctor) return;
+  const handleScheduleAppointment = async () => {
+    if (!selectedPatient || !date.hoursMinutes || !selectedDoctor) return;
 
-    // const updatedHoursAvailable = selectedDoctor.hoursAvailable.filter(
-    //   (time) => !format(time, 'hh:mm').includes(format(date.dateTime, 'hh:mm'))
-    // );
+  // Extract the hours and minutes from date.hoursMinutes
+  const { justDate, hoursMinutes } = date;
+  const selectedTime = new Date(justDate);
 
+  selectedTime.setUTCHours(hoursMinutes.getHours());
+  selectedTime.setUTCMinutes(hoursMinutes.getMinutes());
+
+    try{
+
+      //first check if appDateTime exists in doctor object, if not, update, if yes, return error.
+      const availability=await fetch('/api/doctor/appointment',{
+        method:'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({appointments: selectedTime, firstName:selectedDoctor.firstName, patient:selectedPatient.firstName}),
+      })
+      const data=await availability.json();
+      console.log('availability is ',data.available);
+      if(data.available){
+        setTimeSelected(true);
+      }
+      else{
+        alert('the selected time is not available, please choose a different time')
+      }
+
+    }
+    catch(err){
+      console.log('appointmenthandler error!',err);
+    }
     // fetch(`/api/doctors/${selectedDoctor._id}`, {
     //   method: 'PUT',
     //   headers: {
@@ -97,7 +126,7 @@ const DoctorCalendar = () => {
     //     console.error('Error scheduling appointment:', error);
     //   });
 
-    setTimeSelected(true);
+    // setTimeSelected(true);
 
   };
 
@@ -124,13 +153,13 @@ const DoctorCalendar = () => {
         <>
           <h2>Select Doctor</h2>
           <select className="select-patient"
-            value={selectedDoctor?.name || ''}
+            value={selectedDoctor?.firstName || ''}
             onChange={(e) => handleDoctorSelection(e.target.value)}
           >
             <option value="">Select Doctor</option>
             {doctors.map((doctor) => (
-              <option key={doctor.name} value={doctor.name}>
-                {doctor.name}
+              <option key={doctor.firstName} value={doctor.firstName}>
+                {doctor.firstName}
               </option>
             ))}
           </select>
@@ -145,6 +174,7 @@ const DoctorCalendar = () => {
                     <p>Selected Date: {format(date.justDate, 'MM/dd/yyyy')}</p>
                     <p>Select Time:</p>
                     <div>
+
                       {timesAvailable.map((time, i) => (
                         <div key={`time-${i}`}>
                           <button
@@ -153,7 +183,7 @@ const DoctorCalendar = () => {
                             onClick={() => {
                               setDate((prev) => ({
                                 ...prev,
-                                dateTime: time,
+                                hoursMinutes: time,
                               }));
                             }}
                           >
@@ -178,6 +208,13 @@ const DoctorCalendar = () => {
           <h2>Appointment Scheduled!</h2>
         </div>
       )}
+      {
+        !timeSelected && (
+          <div>
+            <h2>Please select a different time</h2>
+          </div>
+        )
+      }
 
       {!selectedPatient && !timeSelected && (
         <div>
@@ -200,9 +237,9 @@ const DoctorCalendar = () => {
             setDate((prev) => ({
               ...prev,
               justDate: selectedDate,
-              dateTime: null,
+              hoursMinutes: null,
             }));
-            handleDoctorSelection(selectedDoctor?.name);
+            handleDoctorSelection(selectedDoctor?.firstName);
           }}
         />
       )}

@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import { render } from '@testing-library/react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom'
+
+const CLIENT_ID = "1f252291952872a24f19"
 
 const Login = props => {
     
@@ -11,6 +14,8 @@ const Login = props => {
 
     const navigate = useNavigate();
 
+    
+    
     const handleAccountType=(e)=>{
         e.preventDefault();
         let accounttype=e.currentTarget.getAttribute('value');
@@ -82,6 +87,7 @@ const Login = props => {
                 <input type="submit"></input>
             </form>
             {errorMessage && <p className="login-error">Email or password is incorrect!</p>}
+            {/* {userData ? <p>{[userData]}</p> : <p></p>} */}
         </div>
     );
 };
