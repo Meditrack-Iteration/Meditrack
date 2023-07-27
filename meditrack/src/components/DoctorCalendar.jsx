@@ -12,12 +12,9 @@ const DoctorCalendar = () => {
   const [timeSelected, setTimeSelected] = useState(false);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
     // const email = localStorage.getItem('email');
     fetch(`/api/dashboard`)
     // const email = localStorage.getItem('email');
->>>>>>> Dev
     fetch(`/api/dashboard`)
       .then((data) => data.json())
       .then((data) => {
