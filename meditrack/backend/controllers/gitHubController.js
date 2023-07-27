@@ -23,9 +23,29 @@ const gitHubController = {
     },
 
     async setAccessCookie(req,res,next) {
-        res.cookie("Authorization", res.locals.access.access_token);
+        res.cookie("Authorization", "Bearer " + res.locals.access.access_token);
+        // console.log(res.cookies["Authorization"])
+        console.log('Cookies: ', res._headers["set-cookie"])
         return next()
     },
+
+    async getUserData(req,res,next){
+        console.log("before fetching user data")
+            await fetch ("https://api.github.com/user", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + res.locals.access.access_token,
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+                }).then((response) =>{
+                    return response.json();
+                }).then((data) =>{
+                    res.locals.gitUser = data
+                    console.log(data);
+                    return next();
+                })
+
+    }
 
 
 
