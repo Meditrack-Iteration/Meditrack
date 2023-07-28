@@ -16,7 +16,7 @@ const PatientCalendar = props => {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [patientsArray, setPatientsArray] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState([]);
-
+  console.log(allEvents)
   useEffect( () => {
     fetch(`/api/dashboard`)
     .then((data) => data.json()) 
@@ -50,7 +50,9 @@ const PatientCalendar = props => {
     locales
   });
 
-
+  const handleSelected = (e) => {
+    console.log(e)
+  }
   const handlePatientSelection = (patient) => {
     setSelectedPatient(patient);
     const filteredEvents = allEvents.filter((event) => event.patientFirstName === patient.firstName);

@@ -42,30 +42,21 @@ const patientController = {
         }
 
 
+      },
+      async removePatient(req,res,next){
+        const {patientId} = req.body;
+        const _id = req.cookies._id;
+        try{
+          //get user into doc
+          const doc = await User.findOne({"_id" : _id});
+          //remove patient from doc
+          doc.patients.pull({"_id": patientId});
+          await doc.save();
+          return next();
+        }catch(err){
+          return next({err : `Error creating a new patient, ${err}`});
+        }
       }
-
-    // async getPatient(req, res, next) {
-    //     const { firstName } = req.params;
-    //     Patient.findOne({ firstName: firstName }) //include lastName here also?
-    //     .then((Patient) => {
-    //       if  (!Patient)
-    //         return res.status(400).json({ error: 'Error in PatientModel.getPatient: Could not find Patient'});
-    //       console.log("Couldn't find patient!")
-    //       res.locals.Patient = Patient
-    //       next()    
-    //     })
-    //     .catch((err) => {
-    //       return next({err : `Error getting patient, ${err}`})
-    //     })
-    // },
-
-    // async deletePatient(req, res, next) {
-    //   const { firstName } = req.params;
-    //   const data = await Patient.deleteOne({ firstName: firstName}); // returns {deletedCount: 1}
-    //   console.log(data)
-    //   if (data.deletedCount === 0) return next(400);
-    //   if (data) return next();
-    // },
 };
 
 module.exports = { patientController }

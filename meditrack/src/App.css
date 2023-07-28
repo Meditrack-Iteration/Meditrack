@@ -287,6 +287,9 @@ body {
   max-width: 400px;
   margin: 0 auto;
   color: var(--cream);
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;;
 }
 
 .patient button {
@@ -299,16 +302,36 @@ body {
   color: var(--dark-red);
   font-weight: bold;
   cursor: pointer;
+
+
 }
 
 .patient button:hover {
   background-color: #2BAEA0;
   color: var(--cream);
+
 }
 
 .add-patient {
   color: var(--dark-blue);
-  margin-bottom: 5px;
+  margin-bottom: 5px; 
+  
+}
+
+.patient .deleteButton{
+  padding: 0.5rem 1rem;
+  margin-top: 3px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: #4b4b4b;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  cursor: pointer;
+}
+.patient .deleteButton:hover{
+  background-color: #5334ef;
+  color: var(--cream);
 }
 
 /*
