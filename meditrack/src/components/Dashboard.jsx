@@ -7,15 +7,14 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
+    const [userName, setUserName] = useState("")
     
 
     useEffect( () => {
-        // console.log("useEffect fetch")
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
-            console.log(data)
-            setFirstName(data.firstName);
+            setUserName(data.firstName);
             setPatientsArray(data.patients);
         })
         .catch(() => console.log("error in dashboard.js"))
@@ -58,7 +57,7 @@ const Dashboard = props => {
         <div>
         <Navbar />
         <div className = 'dashboard-container'>
-            <h2>Welcome, {firstName}!</h2>
+            <h2>Welcome, {userName}!</h2>
             <h3 className="patients-header">Patients</h3>
             <div className="patients-container">
             {patientsArray && <PatientList className="patients-list" patients = { patientsArray } handleAddPatient={handleAddPatient}></PatientList>}

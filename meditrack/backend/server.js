@@ -39,10 +39,10 @@ app.get('/api/dashboard', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
 
-app.get("/api/getAccessToken", gitHubController.getAccessToken, gitHubController.setAccessCookie, gitHubController.getUserData, (req,res) =>{
-  console.log("this is last middleware test1", res.locals.access);
-  console.log("this is last middleware test1", res.locals.gitUser);
-  return res.status(200).json(res.locals.gitUser)
+app.get("/api/getAccessToken", gitHubController.getAccessToken, gitHubController.setAccessCookie, gitHubController.getUserData, gitHubController.createUser,
+gitHubController.getUser,gitHubController.setCookie, (req,res) =>{
+  console.log("this is last middleware test1", res.locals.user);
+  return res.status(200).json(res.locals.user)
     
 })
 

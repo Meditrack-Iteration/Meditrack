@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import logo from '../logo.png';
 import './Home.css';
 const CLIENT_ID = "1f252291952872a24f19"
@@ -8,8 +9,8 @@ let cookieValue;
 // need to implement the gradient text
 
 const Home = () => {
-    const [userData, setUserData] = useState([])
     const [rerender, setRerender] = useState(false)
+    const navigate = useNavigate();
 
     useEffect(()=> {
         const urlParams = new URLSearchParams(document.location.search)
@@ -26,54 +27,14 @@ const Home = () => {
                 }).then((response) =>{
                     return response.json();
                 }).then((data)=>{
-                    console.log(data);
-                    if(data.access_token){
-                        setRerender(!rerender)
+                    if(data._id){
+                        navigate(`/dashboard`);
                     }
                 })
             }  
         getAccessToken();
         }
-        
-        // else if(codeParam && (cookieValue !== "")){
-        //     async function getUserData() {
-        //         cookieValue = getCookie("Authorization")
-        //         console.log("before fetching user data")
-        //         console.log("this is cookie value", cookieValue)
-        //         await fetch("/api/getUserData", {
-        //             method: "GET",
-        //             headers: {
-        //                 "Authorization": cookieValue
-        //             }
-        //         }).then((response) =>{
-        //             return response.json();
-        //         }).then((data) =>{
-        //             console.log(data);
-        //             setUserData(data);
-        //             // setRerender(!rerender);
-        //         })
-        //     }
-        //     getUserData();
-        // } 
     }, [rerender])
-
-    // async function getUserData() {
-    //     cookieValue = getCookie("Authorization")
-    //     console.log("before fetching user data")
-    //     console.log("this is cookie value", cookieValue)
-    //     await fetch("/api/getUserData", {
-    //         method: "GET",
-    //         headers: {
-    //             "Authorization": cookieValue
-    //         }
-    //     }).then((response) =>{
-    //         return response.json();
-    //     }).then((data) =>{
-    //         console.log(data);
-    //         setUserData(data);
-    //         setRerender(!rerender);
-    //     })
-    // }
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -100,7 +61,6 @@ const Home = () => {
             <h1>MediTrack</h1>
             <h3>Please <Link className="link" to="/login">login</Link> or <Link className="link" to="signup">signup</Link> to continue</h3>
             <button onClick={loginWithGithub}>Login with Github</button>
-            {/* <button onClick={getUserData}>get user data</button> */}
             <div className="home section__padding">
             <div className="home-image">
             <img src={logo} alt="logo" />
