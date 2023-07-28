@@ -35,6 +35,11 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get('/api/dashboard/doctor', doctorController.getDoctor, (req, res) => {
+  console.log(res.locals.doctor);
+  res.status(200).json(res.locals.doctor);
+})
+
 app.get('/api/dashboard', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })

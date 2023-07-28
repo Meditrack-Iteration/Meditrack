@@ -1,5 +1,9 @@
 const { Doctor } = require('../models/models');
-
+const express = require('express');
+const cookieParser = require('cookie-parser'); // Import the cookie-parser middleware
+const app = express();
+app.use(cookieParser()); // Use the cookie-parser middleware
+// 
 const doctorController={};
 
 doctorController.login= (req,res,next)=>{
@@ -112,5 +116,37 @@ doctorController.appointments=async(req,res,next)=>{
     return next(err);
   }
 };
+
+//get doctor data for doctor dashboard
+doctorController.getDoctor = async (req, res, next) => {
+  console.log('I am in doctorcontroller getDoctor');
+
+  const _id = req.cookies['_id']; // Access the _id cookie using req.cookies
+
+  Doctor.findOne({ _id: _id })
+    .then((doctor) => {
+      if (!doctor)
+        return next({ err: 'Error in userModel.getuser: Could not find user' });
+      res.locals.doctor = doctor;
+      return next();
+    })
+    .catch((err) => {
+      return next(err);
+    });
+};
+
+//   // console.log(req.cookies['_id']);
+//   const { _id } = getCookie('_id');
+// console.log(getCookie('_id'));
+//   Doctor.findOne({_id : _id })
+//   .then((doctor) => {
+//     if  (!doctor)
+//       return next({ err: 'Error in userModel.getuser: Could not find user'});
+//     // console.log("Get patients fired!")
+//     res.locals.doctor = doctor;
+//     // console.log(res.locals.userPatients);
+//     return next();
+//   })
+// }
 
 module.exports = { doctorController }
