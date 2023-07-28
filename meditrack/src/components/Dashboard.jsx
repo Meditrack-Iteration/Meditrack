@@ -11,7 +11,6 @@ const Dashboard = props => {
     
 
     useEffect( () => {
-        // console.log("useEffect fetch")
         fetch(`/api/dashboard`)
         .then((data) => data.json()) 
         .then((data) => {
