@@ -145,10 +145,9 @@ module.exports = {
     Patient,
     User,
     MedicationLog,
-    Appointment,
-    // FutureIntake,
     Doctor,
     MedSchedule,
     Appointment
 }
+
 
