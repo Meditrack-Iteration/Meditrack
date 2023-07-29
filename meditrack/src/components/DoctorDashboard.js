@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import DoctorCard from './DoctorCard';
+import './doctordashboard.css';
 const DoctorDashboard = ({DocAppointArray})=>{
 
     return(
-        <div>
-            <h1>Appointments</h1>
+
+<div classname="doctordashboard">
+                    <h1>Appointments</h1>
+
+
         {
             DocAppointArray.map((appointment,id)=>(
                 <DoctorCard
@@ -16,7 +20,9 @@ const DoctorDashboard = ({DocAppointArray})=>{
             )   
             )
         }
-        </div>
+
+</div>
+
     )
 }
 export default DoctorDashboard;

@@ -12,6 +12,7 @@ const Dashboard = props => {
     const [doctorstatus, setdoctorstatus] =useState(false);
     const[fetchURL, setFetchURL]=useState("/api/dashboard")
     const [DocAppointArray, setDocAppointArray]=useState([]);
+    const [doctorUsername, setDoctorUsername] = useState("");
 useEffect(()=>{
 const isdoctorornot=async()=>{
     function getCookie(cname) {
@@ -47,31 +48,26 @@ isdoctorornot();
     },[]
     )
 
-useEffect( () => {
-        // console.log("useEffect fetch")
+
+    useEffect(() => {
         fetch(fetchURL)
-        .then((data) => data.json()) 
-        .then((data) => {
-            console.log(data)
-            setUsername(data.firstName);
-            if(doctorstatus){
-                setDocAppointArray(data.appointments);
+          .then((data) => data.json()) 
+          .then((data) => {
+            // Update the doctor's username only when logged in as a doctor
+            if (doctorstatus) {
+              setDoctorUsername(data.firstName);
+              setDocAppointArray(data.appointments);
+            } else {
+              setUsername(data.firstName);
+              setPatientsArray(data.patients);
             }
-            else{
-
-                setPatientsArray(data.patients);
-            }
-
-        })
-        .catch(() => console.log("error in dashboard.js"))
-
-    }, [doctorstatus,fetchURL]);
-
-
+          })
+          .catch(() => console.log("error in dashboard.js"));
+      }, [doctorstatus, fetchURL]);
     
 
     useEffect( () => {
-        fetch(`/api/dashboard`)
+        fetch(fetchURL)
         .then((data) => data.json()) 
         .then((data) => {
             // setUsername(data.firstName);
@@ -119,7 +115,7 @@ useEffect( () => {
         <Navbar />
         <div className = 'dashboard-container'>
 
-            <h2>Welcome, {username}!</h2>
+        <h2>Welcome, {doctorstatus ? doctorUsername : username}!</h2>
             {
                 !doctorstatus &&
                 <div className="patientscontainer">
