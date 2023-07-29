@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom'
 import {useNavigate} from 'react-router-dom'
 import logo from '../logo.png';
+import GithubButton from 'react-github-login-button'
+import IsLoading from './isLoading';
 import './Home.css';
 const CLIENT_ID = "1f252291952872a24f19"
 let cookieValue;
@@ -11,6 +13,7 @@ let cookieValue;
 const Home = () => {
     const [rerender, setRerender] = useState(false)
     const navigate = useNavigate();
+    const [isLoading ,setIsLoading] = useState(false)
 
     useEffect(()=> {
         const urlParams = new URLSearchParams(document.location.search)
@@ -20,6 +23,7 @@ const Home = () => {
         console.log("this is first cookie value", cookieValue)
 
         if(codeParam && (cookieValue === "")){
+            setIsLoading(true)
             console.log("before making call to /getAccessToken")
             async function getAccessToken(){
                 await fetch("/api/getAccessToken?code=" + codeParam, {
@@ -28,13 +32,14 @@ const Home = () => {
                     return response.json();
                 }).then((data)=>{
                     if(data._id){
+                        setIsLoading(false)
                         navigate(`/dashboard`);
                     }
                 })
             }  
         getAccessToken();
         }
-    }, [rerender])
+    }, [rerender, navigate])
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -54,13 +59,16 @@ const Home = () => {
 
     function loginWithGithub() {
         window.location.assign("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID)
+        setRerender(!rerender)
       }
 
     return(
+        // {isLoading ? <isLoading/> :}
+        <> {isLoading ? <IsLoading/> :
         <div className="homepage-container">
             <h1>MediTrack</h1>
             <h3>Please <Link className="link" to="/login">login</Link> or <Link className="link" to="signup">signup</Link> to continue</h3>
-            <button onClick={loginWithGithub}>Login with Github</button>
+            <GithubButton style={{margin: "auto"}} onClick={loginWithGithub}/>
             <div className="home section__padding">
             <div className="home-image">
             <img src={logo} alt="logo" />
@@ -71,6 +79,8 @@ const Home = () => {
             </div>
         </div>
          </div>
+    }
+         </>
     );
 
 
