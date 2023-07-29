@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
+import Navbar from './Navbar'
 import DatePicker from 'react-datepicker';
 
 const PatientCalendar = props => {
@@ -139,6 +140,8 @@ const PatientCalendar = props => {
   
     
   return (
+    <>
+    <Navbar/>
     <div className="med-calendar-container">
       <h1>Medicine Dosage Log</h1>
   
@@ -191,6 +194,7 @@ const PatientCalendar = props => {
         style={{ height: 500, margin: "50px" }}
       />
     </div>
+    </>
   );
   
   

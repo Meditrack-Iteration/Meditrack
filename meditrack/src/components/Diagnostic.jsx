@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Navbar from './Navbar'
 const Diagnostic = (symptoms) => {
   async function runPrompt() {
     const prompt = `I am not feeling very well. My symptoms are ${symptoms}. Can you provide 1-3 possible conditions as well as 1-3 medications for me to consider to address my concerns? Please provide specific medication names (i.e. Asprin, Aleve-D, Flonase, etc...)`;
@@ -30,7 +30,11 @@ const Diagnostic = (symptoms) => {
   }
 
   return (
+    <>
+              <Navbar/>
+
     <div className="diagnostic-container" style={{ marginTop: "20px", maxWidth: "650px", margin: "0 auto", lineHeight: "2rem" }}>
+
       <h3 className="dse-title" style={{margin: "60px 0"}}>Diagnostic Suggestion Engine</h3>
       <p className="dse-para" style={{ textAlign: "center" }}>
         To use the Diagnostic Suggestion Engine, please describe your symptoms below. The DSE will then determine 1-3 possible ailments that you may be suffering from, as well as 1-3 medications for you to consider taking in order to best address your concerns.
@@ -49,6 +53,7 @@ const Diagnostic = (symptoms) => {
         </form>
       </div>
     </div>
+    </>
   );
   
 };

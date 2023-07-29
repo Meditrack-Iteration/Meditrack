@@ -7,6 +7,7 @@ const Footer = () => {
     function logout() {
         document.cookie = "_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        document.cookie = "doctor=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         navigate("/")
     }
     return (

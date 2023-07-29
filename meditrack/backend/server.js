@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/api/dashboard/doctor', doctorController.getDoctor, (req, res) => {
-  console.log(res.locals.doctor);
+  console.log('dashboard/doctor is working',res.locals.doctor);
   res.status(200).json(res.locals.doctor);
 })
 

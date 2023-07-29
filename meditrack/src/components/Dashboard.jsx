@@ -70,16 +70,16 @@ useEffect( () => {
 
     
 
-    // useEffect( () => {
-    //     fetch(`/api/dashboard`)
-    //     .then((data) => data.json()) 
-    //     .then((data) => {
-    //         setUsername(data.firstName);
-    //         setPatientsArray(data.patients);
-    //     })
-    //     .catch(() => console.log("error in dashboard.js"))
+    useEffect( () => {
+        fetch(`/api/dashboard`)
+        .then((data) => data.json()) 
+        .then((data) => {
+            // setUsername(data.firstName);
+            setPatientsArray(data.patients);
+        })
+        .catch(() => console.log("error in dashboard.js"))
 
-    // }, [patientsArray]);
+    }, [patientsArray]);
 
     
     const handleAddPatient = () => {

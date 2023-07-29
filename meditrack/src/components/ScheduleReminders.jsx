@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
-
+import Navbar from './Navbar'
 const ScheduleReminders = () => {
   const [patientsArray, setPatientsArray] = useState([]);
   const [medList, setMedList] = useState([]);
@@ -78,6 +78,9 @@ const handleSetPatient = (patient) => {
   };
 
   return (
+    <>
+    <Navbar/>
+
     <div className="reminder-container">
       <h1>Schedule Reminders</h1>
       <div className="form-container">
@@ -138,6 +141,7 @@ const handleSetPatient = (patient) => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

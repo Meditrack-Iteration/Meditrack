@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactCalendar from 'react-calendar';
 import { add, format } from 'date-fns';
-
+import Navbar from './Navbar'
 const DoctorCalendar = () => {
   const [date, setDate] = useState({ justDate: null, hoursMinutes: null });
   const [patientsArray, setPatientsArray] = useState([]);
@@ -131,6 +131,8 @@ const DoctorCalendar = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div>
       <h1>Doctor Calendar</h1>
 
@@ -244,6 +246,7 @@ const DoctorCalendar = () => {
         />
       )}
     </div>
+    </>
   );
 };
 
