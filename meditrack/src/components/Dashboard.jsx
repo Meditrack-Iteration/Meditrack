@@ -8,6 +8,7 @@ const Dashboard = props => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [weight, setWeight] = useState("");
+    const [username, setUsername] = useState("")
     const [doctorstatus, setdoctorstatus] =useState(false);
     const[fetchURL, setFetchURL]=useState("/api/dashboard")
     const [DocAppointArray, setDocAppointArray]=useState([]);
@@ -52,7 +53,7 @@ useEffect( () => {
         .then((data) => data.json()) 
         .then((data) => {
             console.log(data)
-            setFirstName(data.firstName);
+            setUsername(data.firstName);
             if(doctorstatus){
                 setDocAppointArray(data.appointments);
             }
@@ -65,6 +66,21 @@ useEffect( () => {
         .catch(() => console.log("error in dashboard.js"))
 
     }, [doctorstatus,fetchURL]);
+
+
+    
+
+    // useEffect( () => {
+    //     fetch(`/api/dashboard`)
+    //     .then((data) => data.json()) 
+    //     .then((data) => {
+    //         setUsername(data.firstName);
+    //         setPatientsArray(data.patients);
+    //     })
+    //     .catch(() => console.log("error in dashboard.js"))
+
+    // }, [patientsArray]);
+
     
     const handleAddPatient = () => {
         
@@ -102,7 +118,8 @@ useEffect( () => {
         <div>
         <Navbar />
         <div className = 'dashboard-container'>
-            <h2>Welcome, {firstName}!</h2>
+
+            <h2>Welcome, {username}!</h2>
             {
                 !doctorstatus &&
                 <div className="patientscontainer">

@@ -44,10 +44,10 @@ app.get('/api/dashboard', userController.getPatients, (req, res) => {
     res.status(200).json(res.locals.user);
 })
 
-app.get("/api/getAccessToken", gitHubController.getAccessToken, gitHubController.setAccessCookie, gitHubController.getUserData, (req,res) =>{
-  console.log("this is last middleware test1", res.locals.access);
-  console.log("this is last middleware test1", res.locals.gitUser);
-  return res.status(200).json(res.locals.gitUser)
+app.get("/api/getAccessToken", gitHubController.getAccessToken, gitHubController.setAccessCookie, gitHubController.getUserData, gitHubController.createUser,
+gitHubController.getUser,gitHubController.setCookie, (req,res) =>{
+  console.log("this is last middleware test1", res.locals.user);
+  return res.status(200).json(res.locals.user)
     
 })
 
@@ -157,11 +157,21 @@ app.post('/api/addMedication', medicationController.addMedication, (req,res) => 
 app.post('/api/addMedicationLog', medicationController.addMedicationLog, (req,res) => {
   return res.status(200).send('Medication log entry created')
 })
-app.post('/api/addMedicationSchedule', medicationController.addMedicationSchedule, (req,res) => {
+app.post('/api/addMedicationSchedule', medicationController.getFutureMeds, (req,res) => {
   return res.status(200).json(res.locals.obj)
 })
 
+app.post('/api/removePatient', patientController.removePatient, (req,res) => {
+  return res.status(200).json("Patient has been removed")
+})
 
+app.post('/api/removeMedication', medicationController.removeMedication, (req,res) => {
+  return res.status(200).send('Medication removed');
+})
+
+app.post('/api/removeMedicationLog', medicationController.removeMedicationLog, (req,res) => {
+  return res.status(200).send('Medication log entry removed')
+})
 // function sendTextMessage() {
 //   client.message.create({
 //     body: 'Hello from Node',

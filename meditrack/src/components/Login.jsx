@@ -2,8 +2,6 @@ import { render } from '@testing-library/react';
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 
-const CLIENT_ID = "1f252291952872a24f19"
-
 const Login = props => {
     
     const [errorMessage, setErrorMessage] = useState(false);
