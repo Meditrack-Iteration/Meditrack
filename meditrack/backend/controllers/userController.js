@@ -83,6 +83,7 @@ const userController = {
     })
   },
 
+
   //update user
 
   async updateUser(req, res, next) {
