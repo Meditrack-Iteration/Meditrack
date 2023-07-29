@@ -87,8 +87,8 @@ gitHubController.getUser,gitHubController.setCookie, (req,res) =>{
 // })
 
 app.post('/api/signup', userController.createUser, cookieController.setCookie,  (req, res) => {
-  console.log('new user created and saved', res.locals.newUser);
-    res.status(200).json(res.locals.newUser);
+  console.log('new user created and saved', res.locals.user);
+    res.status(200).json(res.locals.user);
 })
 app.post('/api/login/doctor',doctorController.login, cookieController.setDoctorCookie,(req,res)=>{
 
